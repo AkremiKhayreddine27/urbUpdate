@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<main layout:fragment="page">
+    <div class="container" id="showClaim">
+        <div class="row">
+            <div class="show-claim col-md-8">
+                <div class="show-claim_header">
+                    <div class="show-claim_header_title">{{ claim.title }}</div>
+                    <div class="show-claim_header_edit">
+                        <a v-bind:href="'/claims/'+claim.id+'/edit'"
+                           v-if="isAdmin || isAgent || claim.user.id == user.id"
+                           class="btn btn-default btn-sm"><i class="fa fa-edit"></i> Modifier</a>
+                    </div>
+                    <div class="show-claim_header_params" v-if="isAdmin || isAgent">
+                        <a v-on:click="validateFeature(claim)"
+                           v-if="claim.feature.status == 'annulée'"
+                           class="btn btn-success btn-sm"><i class="fa fa-check"></i>
+                            Valider
+                        </a>
+                        <a v-on:click="validateFeature(claim)"
+                           v-if="claim.feature.status == 'En instance'"
+                           class="btn btn-success btn-sm"><i class="fa fa-check"></i>
+                            Valider
+                        </a>
+                        <a v-on:click="cancelFeature(claim)"
+                           v-if="claim.feature.status == 'En instance'"
+                           class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>
+                            Annuler
+                        </a>
+                        <a v-on:click="cancelFeature(claim)"
+                           v-if="claim.feature.status == 'validée'"
+                           class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>
+                            Annuler
+                        </a>
+                    </div>
+                </div>
+                <div class="show-claim_infos">
+                    <div class="infos">
+                        <i class="fa fa-user"></i> {{ claim.user.name }} |
+                        <i class="fa fa-clock-o"></i> {{ claim.updated_at }}
+                    </div>
+                </div>
+                <div class="show-claim_description">
+                    {{ claim.description }}
+                </div>
+                <div class="show-claim_photos">
+                    <ul>
+                        <li v-for="photo in claim.photos">
+                            <a :href="photo.url" data-lity="true">
+                                <img :src="photo.thumbnail_path_url"/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3 class="title">Historique des modifications</h3>
+                <div v-if="claim.adjustments.length > 0" class="show-claim_adjustments">
+                    <ul>
+                        <li v-for="adjustment in claim.adjustments">
+                            <div :class="[adjustment.new_version.status, circle]"></div>
+                            <p v-if="adjustment.new_version.status">
+                                {{ adjustment.user.name }} a {{ adjustment.new_version.status }} cette
+                                réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                            <p v-if="adjustment.new_version.title">
+                                {{ adjustment.user.name }} a modifier le titre cette réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                            <p v-if="adjustment.new_version.description">
+                                {{ adjustment.user.name }} a modifier la description cette
+                                réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div v-if="claim.adjustments.length == 0" class="show-claim_adjustments">
+                    aucune modification
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block layout:fragment="script">
+    <script type='text/javascript' th:src="@{/js/showClaim.js}"></script>
+</th:block>
+</html>

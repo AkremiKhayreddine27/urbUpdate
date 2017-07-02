@@ -1,0 +1,312 @@
+[v-cloak] {
+  display: none
+}
+
+@media only screen and (min-width: 600px) {
+  .claim {
+    &_title {
+      font-size: 1em;
+      a {
+        font-size: 1em;
+      }
+    }
+    &_infos {
+      font-size: 1em;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .claim {
+    &_title {
+      font-size: 1em;
+      a {
+        font-size: 1em;
+      }
+    }
+    &_infos {
+      font-size: 1em;
+    }
+  }
+}
+
+.claims {
+  .loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+  .claim {
+    background-color: white;
+    border: 1px solid #EEEEEE;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    &_content {
+      display: flex;
+      flex-direction: column;
+    }
+    &_title {
+      padding: 15px 15px 0 15px;
+      font-size: 1.3em;
+      a {
+        font-size: 1em;
+        color: $secondary-color !important;
+        text-decoration: none;
+      }
+    }
+    &_infos {
+      color: #a5a5a5;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0 20px 0 15px;
+      .infos {
+        flex-basis: 100%;
+        padding: 5px;
+        i {
+          margin-right: 3px;
+        }
+      }
+      .claim_actions {
+        flex-basis: 100%;
+        justify-content: flex-end;
+        display: flex;
+      }
+    }
+    &_params {
+      margin-left: 5px;
+    }
+    &_footer {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      background-color: #FCFCFC;
+      border-top: 1px solid #EEEEEE;
+      .dropdown {
+        margin-left: 5px;
+        .dropdown-toggle {
+          opacity: .8;
+          border: none !important;
+        }
+        .dropdown-menu {
+          li:first-child {
+            padding: 5px 7px;
+          }
+        }
+      }
+      .dropup {
+        .dropdown-toggle {
+          background-color: transparent !important;
+          color: $primary-color !important;
+          padding: 0 8px;
+          height: 22px;
+        }
+      }
+      .claim_status {
+        color: white;
+        flex: 1;
+        display: flex;
+        div {
+          padding: 0 8px;
+          height: 22px;
+          border-radius: 5px;
+          i {
+            margin-right: 2px;
+          }
+        }
+      }
+    }
+    &_description {
+      flex-basis: 100%;
+      font-size: 1.1em;
+      margin: 30px 0 30px 0;
+      padding: 0 15px 15px 15px;
+    }
+    &_photos {
+      flex-basis: 100%;
+      padding: 2px;
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        li {
+          flex-basis: 25%;
+          padding: 10px;
+          position: relative;
+          img {
+            width: 100%;
+          }
+          .btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+        }
+      }
+      img {
+        width: 100%;
+      }
+    }
+    &_adjustments {
+      margin-top: 30px;
+    }
+  }
+}
+
+.show-claim {
+  background-color: white;
+  border: 1px solid lighten(#dddddd, 5%);
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  margin-bottom: 30px;
+  &_header {
+    flex-basis: 100%;
+    padding: 30px 30px 0 30px;
+    display: flex;
+    .btn-default {
+      margin-right: 5px;
+      color: $secondary-color !important;
+    }
+    .btn-success, .btn-danger {
+      color: white !important;
+    }
+    &_title {
+      flex: 1;
+      color: $primary-color !important;
+      font-size: 1.4em;
+    }
+    a {
+      font-size: 1em;
+      color: $secondary-color !important;
+      text-decoration: none;
+    }
+  }
+  &_infos {
+    flex-basis: 100%;
+    color: #a5a5a5;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-left: 30px;
+    .infos {
+      flex-basis: 100%;
+      padding: 5px;
+      i {
+        margin-right: 3px;
+      }
+    }
+    .claim_actions {
+      flex-basis: 100%;
+      justify-content: flex-end;
+      display: flex;
+    }
+  }
+  &_params {
+    margin-left: 5px;
+  }
+  &_top {
+    width: 100%;
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    .dropdown {
+      margin-left: 5px;
+      .dropdown-toggle {
+        opacity: .8;
+        border: none !important;
+      }
+      .dropdown-menu {
+        li:first-child {
+          padding: 5px 7px;
+        }
+      }
+    }
+    .claim_status {
+      color: white;
+      flex: 1;
+      display: flex;
+      div {
+        padding: 5px 15px;
+      }
+    }
+  }
+  &_description {
+    flex-basis: 100%;
+    font-size: 1.1em;
+    margin: 30px 0 30px 0;
+    padding: 0 30px 15px 30px;
+  }
+  &_photos {
+    flex-basis: 100%;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      li {
+        flex-basis: 25%;
+        padding: 10px;
+        position: relative;
+        img {
+          width: 100%;
+        }
+        .btn {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+        }
+      }
+    }
+    img {
+      width: 100%;
+    }
+  }
+  &_adjustments {
+    background-color: white;
+    border: 1px solid lighten(#dddddd, 5%);
+    padding: 15px;
+    padding-top: 5px !important;
+    margin-bottom: 30px;
+    ul {
+      li {
+        padding: 5px;
+        border-left: 3px solid #dddddd;
+        position: relative;
+        .circle {
+          position: absolute;
+          top: 10px;
+          left: -9px;
+          background-color: white;
+          border: 2px solid #dddddd;
+          height: 15px;
+          width: 15px;
+          border-radius: 50%;
+        }
+        .validée {
+          border-color: $green;
+        }
+        .annulée {
+          border-color: $red;
+        }
+        p {
+          margin-left: 20px;
+          .claim_adjustment_time {
+            font-size: 0.9em;
+          }
+        }
+      }
+    }
+  }
+}
+
+.title {
+  background-color: white;
+  border: 1px solid lighten(#dddddd, 5%);
+  border-bottom: none !important;
+  padding: 15px;
+  margin: 0 !important;
+}

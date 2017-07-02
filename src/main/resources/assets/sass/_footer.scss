@@ -1,0 +1,29 @@
+#footer{
+  background-color: $secondary-color;
+  padding: 10px 100px;
+  color: #777777 ;
+  border-top: 1px solid #777777;
+}
+/* bottom */
+#bottom{
+  width: 100%;
+  padding: 50px 0;
+  position: relative;
+  background-color: $secondary-color;
+  color: #777777 ;
+  h3{
+    border-bottom: 4px solid $primary-color;
+    line-height: 50px;
+    width: 38%;
+  }
+  ul li{
+    list-style: none;
+    line-height: 30px;
+    a{
+      color: #777777 ;
+    }
+  }
+  img{
+    max-height: 200px;
+  }
+}

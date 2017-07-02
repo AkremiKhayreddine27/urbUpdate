@@ -1,0 +1,71 @@
+<nav th:fragment="header" class="navbar-default navbar-static-top navbar-top">
+    <div class="map-bg">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img th:src="@{/images/logo.png}"/></a>
+        </div>
+    </div>
+</nav>
+
+<nav th:fragment="navbar" class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <!-- Collapsed Hamburger -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#app-navbar-collapse">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="app-navbar-collapse">
+            <!-- Right Side Of Navbar -->
+            <ul class="nav navbar-nav">
+                <li><a href="/">Accueil</a></li>
+                <li><a th:href="@{/presentation}">Présentation</a></li>
+                <li><a th:href="@{/urban}">L'étalemet urban</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/map}">Cartographie</a></li>
+                <li><a th:href="@{/time}">Remonter le temps</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/claims}">Réclamations </a></li>
+                <li><a th:href="@{/contact}">Contacts</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="isAnonymous()"><a th:href="@{/login}"><i class="fa fa fa-sign-in"></i> Se
+                    connecter</a></li>
+                <li sec:authorize="isAnonymous()"><a th:href="@{/register}"> S'inscrire</a></li>
+                <li sec:authorize="isAuthenticated()" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i sec:authorize="hasAuthority('Administrateur')" class="fa fa-user-secret"></i>
+                        <i class="fa fa-user" sec:authorize="hasAuthority('Collaborateur')"></i>
+                        <span sec:authentication="name"></span> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a th:href="@{/myspace}">
+                                <i class="fa fa-user"></i>
+                                Mon espace
+                            </a>
+                        </li>
+                        <li sec:authorize="hasAuthority('Administrateur')">
+                            <a th:href="@{/admin/dashboard}">
+                                <i class="fa fa-dashboard"></i>
+                                tableau de bord
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out"></i> Se déconnecter
+                            </a>
+
+                            <form id="logout-form" th:action="@{/logout}" method="POST"
+                                  style="display: none;">
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

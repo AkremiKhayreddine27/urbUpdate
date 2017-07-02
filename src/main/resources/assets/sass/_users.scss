@@ -1,0 +1,15 @@
+.user_role {
+  display: flex;
+  padding: 5px;
+}
+
+.user-edit {
+  display: flex;
+  justify-content: space-between;
+  i{
+    padding: 5px;
+    background-color: $primary-color;
+    color: white;
+    cursor: pointer;
+  }
+}

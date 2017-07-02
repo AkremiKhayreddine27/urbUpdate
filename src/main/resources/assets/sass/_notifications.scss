@@ -1,0 +1,22 @@
+.notification {
+  padding: 0;
+  a {
+    display: flex;
+    padding: 10px;
+  }
+  &_time{
+    color: darken(#dddddd,10%);
+    font-size: 0.9em;
+  }
+}
+.notification_badge.badge{
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: $red;
+}
+.dropdown-toggle{
+  .fa-globe{
+    font-size: 1.4em;
+  }
+}

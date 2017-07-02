@@ -1,0 +1,52 @@
+.widget {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dddddd;
+  margin-bottom: 15px;
+  background-color: white;
+  &_content {
+    display: flex;
+    &_left {
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      i {
+        font-size: 1.8em;
+        color: white;
+        height: 50px;
+        width: 50px;
+        background-color: $primary-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+    }
+    &_right{
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      .number{
+        font-size: 2em;
+      }
+    }
+  }
+  &_footer{
+    padding: 10px;
+       ul{
+         display: flex;
+         justify-content:space-between;
+       }
+     }
+  &_actions{
+    border-top: 1px solid #dddddd;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    ul{
+      display: flex;
+      justify-content:space-between;
+      align-items: center;
+    }
+  }
+}

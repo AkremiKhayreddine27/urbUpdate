@@ -1,0 +1,88 @@
+.container-index{
+  padding: 0 !important;
+  .app-disc-group {
+    width: 100%;
+    .app-disc {
+      padding: 50px;
+      .img-circle {
+        width: 80px;
+        height: 80px;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .fa {
+          color: $primary-color;
+          font-size: 2.5em;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .carte-img {
+    width: 100%;
+    display: flex;
+    background-color: white;
+    .app-mobile-logo {
+      flex-basis: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    img {
+      margin: 20px;
+    }
+    .app-description {
+      flex-basis: 50%;
+      padding: 30px;
+      background-color: white;
+      color: #959595;
+      h1 {
+        span {
+          color: #959595;
+        }
+        margin-bottom: 30px;
+        color: $secondary-color;
+      }
+    }
+  }
+  .utility-center-text {
+    text-align: center;
+    width:100%;
+  }
+}
+#layerslider_1 {
+  width: 100%;
+  height: 500px;
+  margin-top: -22px;
+  .ls-slide {
+    p.ls-l {
+      top: 190px;
+      left: 214px;
+      font-weight: 300;
+      font-family: 'Titillium Web', sans-serif;
+      font-size: 42px;
+      line-height: 60px;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+    p.no-left {
+      left: 100px !important;
+    }
+    a.ls-l {
+      top: 325px;
+      left: 209px;
+      .ls1-p {
+        font-size: 18px;
+        padding-top: 12px;
+        padding-right: 25px;
+        padding-bottom: 12px;
+        padding-left: 25px;
+      }
+    }
+  }
+}
+.ls-bg{
+  width: 100% !important;
+  height: 100% !important;
+}

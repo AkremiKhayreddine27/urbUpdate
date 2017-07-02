@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      layout:decorator="layouts/layout">
+<head>
+    <title>Documentation</title>
+</head>
+<main layout:fragment="page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 panel">
+                <div class="panel-body">
+                    <h1>Openlayers</h1>
+                    OpenLayers facilite la mise en place d'une carte dynamique dans n'importe quelle page Web. Il peut
+                    afficher des mosaïques de cartes, des données vectorielles et des marqueurs chargés à partir de
+                    n'importe quelle source.
+                    <br/><br/>
+                    <b>OpenLayers supporte WFS.</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 panel">
+                <div class="panel-body">
+                    <h1>Geoserver</h1>
+                    GeoServer est un serveur logiciel open source écrit en Java qui permet aux utilisateurs de partager
+                    et de modifier des données géospatiales.<br/><br/>
+                    <b>GeoServer supporte les versions 2.0.0, 1.1.0 et 1.0.0 de WFS.</b>
+                    <h2>WFS</h2>
+                    Le service WFS ( Open Geospatial Consortium Consortium GeoSpatial Consortium ) est un protocole
+                    permettant de servir des fonctionnalités géographiques sur le Web. Les informations de
+                    fonctionnalité qui sont codées et transportées à l'aide de WFS incluent à la fois la géométrie des
+                    entités et les valeurs d'attribut de fonctionnalité. Le service de fonctionnalité Web de base (WFS)
+                    prend en charge la requête et la récupération des fonctionnalités.
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      layout:decorator="layouts/layout">
+<head>
+    <title>Tableau de bord</title>
+</head>
+<main layout:fragment="page">
+    <div class="container-fluid">
+        <div class="row" id="widgets">
+            <div class=" col-md-3">
+                <div class="widget">
+                    <div class="widget_content">
+                        <div class="widget_content_left">
+                            <i class="fa fa-archive bg-info"></i>
+                        </div>
+                        <div class="widget_content_right">
+                            <div class="number">{{ claims.length }}</div>
+                            <div class="text">Réclamations</div>
+                        </div>
+                    </div>
+                    <div class="widget_footer">
+                        <ul>
+                            <li><i class="fa fa-check"></i> {{ virifiedClaims }} vérfiées</li>
+                            <li><i class="fa fa-hourglass-1"></i> {{ unvirifiedClaims }} en instance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="widget">
+                    <div class="widget_content">
+                        <div class="widget_content_left">
+                            <i class="fa fa-users bg-danger"></i>
+                        </div>
+                        <div class="widget_content_right">
+                            <div class="number">{{ users.length }}</div>
+                            <div class="text">Utilisateurs</div>
+                        </div>
+                    </div>
+                    <div class="widget_footer">
+                        <ul>
+                            <li><i class="fa fa-user-secret"></i> 15 agents</li>
+                            <li><i class="fa fa-user"></i> 10 utilisateurs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="widget">
+                    <div class="widget_content">
+                        <div class="widget_content_left">
+                            <i class="fa fa-map bg-success"></i>
+                        </div>
+                        <div class="widget_content_right">
+                            <div class="number">{{ layers.length }}</div>
+                            <div class="text">Couches</div>
+                        </div>
+                    </div>
+                    <div class="widget_footer">
+                        <ul>
+                            <li>batdf_Project2_Clip est active</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="widget">
+                    <div class="widget_content">
+                        <div class="widget_content_left">
+                            <i class="fa fa-envelope bg-primary"></i>
+                        </div>
+                        <div class="widget_content_right">
+                            <div class="number">10</div>
+                            <div class="text">Messages</div>
+                        </div>
+                    </div>
+                    <div class="widget_footer">
+                        <ul>
+                            <li>10 Lus</li>
+                            <li>5 Non lus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div th:replace="admin/fragments/geoserver :: geoserver"></div>
+            <div th:replace="admin/fragments/users :: users"></div>
+        </div>
+        <div class="row">
+            <div th:replace="admin/fragments/layers :: layers"></div>
+        </div>
+    </div>
+</main>
+<th:block layout:fragment="script">
+    <script type='text/javascript' th:src="@{/js/layers.js}"></script>
+    <script type='text/javascript' th:src="@{/js/users.js}"></script>
+    <script type='text/javascript' th:src="@{/js/geoserver.js}"></script>
+</th:block>
+</html>

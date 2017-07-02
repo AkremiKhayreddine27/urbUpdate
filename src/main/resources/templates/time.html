@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+    <title>Remonter le temps</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css"/>
+</head>
+
+
+<main layout:fragment="page">
+    <div id="carte">
+        <div id="map1" class=" half-map"></div>
+        <div id="map2" class=" half-map"></div>
+    </div>
+</main>
+<th:block layout:fragment="script">
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+    <script type='text/javascript' th:src="@{/js/time.js}"></script>
+</th:block>
+</html>

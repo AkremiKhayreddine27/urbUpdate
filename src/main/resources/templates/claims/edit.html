@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<main layout:fragment="page">
+    <div class="container" id="editClaim">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">Modifier la réclamation {{ form.model.title }}</div>
+            </div>
+            <div class="panel-body">
+                <form class="post-form" v-on:submit.prevent="saveClaim" v-on:keydown="
+                        form.errors.clear($event.target.name)" enctype="multipart/form-data">
+                    <div class="form-group" v-bind:class="{'has-error': form.errors.get('title')}">
+                        <label for="title" class="control-label">Titre</label>
+                        <div>
+                            <input id="title" v-model="form.model.title" type="text" class="form-control" />
+                            <span class="help-block"><strong v-text="form.errors.get('title')"></strong> </span>
+                        </div>
+                    </div>
+                    <div class="form-group" v-bind:class="{'has-error': form.errors.get('description')}">
+                        <label for="description" class="control-label">Description</label>
+                        <div>
+                                    <textarea v-model="form.model.description" id="description"
+                                              class="form-control"></textarea>
+                            <span class="help-block"><strong v-text="form.errors.get('title')"></strong> </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="show-claim_photos">
+                            <ul>
+                                <li v-for="photo in claim.photos">
+                                    <button v-on:click="deletePhoto(photo.id)" class="btn btn-danger"><i
+                                            class="fa fa-trash"></i></button>
+                                    <img :src="photo.thumbnail_path_url" />
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="dzone" class="dropzone">
+                            <div class="dropzone-previews"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block layout:fragment="script">
+    <script type='text/javascript' th:src="@{/js/editClaim.js}"></script>
+</th:block>
+</html>

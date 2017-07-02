@@ -1,0 +1,37 @@
+// Variables
+@import "variables";
+@import "settings";
+@import "navbar";
+@import "footer";
+@import "index";
+@import "map";
+@import "claims";
+@import "users";
+@import "notifications";
+@import "dashboard";
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+
+/* 403 */
+
+.page-access-denied {
+  font-family: 'Titillium Web', sans-serif;
+  padding: 150px 250px;
+  .infos-403 {
+    line-height: 30px;
+    float: left;
+    display: inline;
+    margin: 40px 40px;
+    font-size: 1.2em;
+  }
+}
+
+.number-403 {
+  float: left;
+  font-size: 10em;
+  color: #E7505A;
+  display: inline;
+}
+
+

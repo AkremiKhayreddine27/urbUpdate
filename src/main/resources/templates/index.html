@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+    <link th:href="@{/css/layerslider.css}" type='text/css' media='all' rel='stylesheet'/>
+</head>
+<main layout:fragment="page">
+    <div id="layerslider_1" class="ls-wp-container">
+        <div class="ls-slide" data-ls=" transition2d: all;">
+            <img th:src="@{/images/slide.jpg}" class="ls-bg" alt="home-bg-4-1"/>
+            <p class="ls-l">
+                <span class="ls-app-name">URBUPDATE</span><br/>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.<br/>
+            </p>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}" target="_self" class="ls-l btn btn-success">
+                <p class="ls1-p">
+                    <i class="fa fa-sign-in"></i> Se connecter
+                </p>
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid container-index">
+        <div class="app-disc-group">
+            <div data-wow-duration="2s" class="col-md-3 app-disc wow bounceInLeft">
+                <div class="img-circle">
+                    <i class="fa fa-refresh"></i>
+                </div>
+                <h4 class="utility-center-text">MISE A JOUR DES CARTES</h4>
+                <p class="utility-center-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur cum dolore et
+                    laborum
+                    maxime nobis odit quidem tenetur veritatis.
+                </p>
+            </div>
+            <div data-wow-duration="2s" class="col-md-3 app-disc wow bounceInUp">
+                <div class="img-circle">
+                    <i class="fa fa-map-marker"></i>
+                </div>
+                <h4 class="utility-center-text">ETALLEMENT URBAN</h4>
+                <p class="utility-center-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque debitis dolorum esse illum impedit
+                    ipsum maiores maxime similique tempore vero.
+                </p>
+            </div>
+            <div data-wow-duration="2s" class="col-md-3 app-disc wow bounceInUp">
+                <div class="img-circle">
+                    <i class="fa fa-users"></i>
+                </div>
+                <h4 class="utility-center-text">GESTION DES UTILISATEURS</h4>
+                <p class="utility-center-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias dolor eius laboriosam magni modi,
+                    provident quia reprehenderit repudiandae sint voluptates.
+                </p>
+            </div>
+            <div data-wow-duration="2s" class="col-md-3 app-disc wow bounceInRight">
+                <div class="img-circle">
+                    <i class="fa fa-file"></i>
+                </div>
+                <h4 class="utility-center-text">GESTION DES RECLAMATION</h4>
+                <p class="utility-center-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque dolore dolorem eaque eveniet
+                    explicabo
+                    nulla qui quisquam sequi suscipit temporibus!
+                </p>
+            </div>
+        </div>
+        <div data-wow-duration="2s" class="app-disc-group primary-bg wow pulse">
+            <div class="app-disc">
+                <h3 class="utility-center-text">URBUPDATE</h3>
+                <p class="utility-center-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat hic ipsa laudantium minima
+                    perferendis
+                    quia quisquam repellendus sapiente soluta vero! Animi aspernatur, at aut beatae consequuntur
+                    doloremque
+                    ea eligendi eos, error facilis inventore laboriosam libero nihil odit optio possimus quae quaerat
+                    quos
+                    suscipit veniam? Consequatur delectus ex magni quisquam vitae! </p>
+            </div>
+        </div>
+        <div class="">
+            <div class="carte-img">
+                <div data-wow-duration="5s" class="app-mobile-logo wow fadeInLeft">
+                    <img th:src="@{/images/phone-black.png}"/>
+                </div>
+                <div data-wow-duration="5s" class="app-description wow fadeInRight">
+                    <h1><span>A propos de </span>URBUPDATE</h1>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium consectetur culpa delectus
+                    dignissimos distinctio minima nemo reprehenderit sint suscipit. Beatae commodi distinctio dolor
+                    dolorem
+                    eius esse itaque minima placeat ratione? Accusamus at atque dolorum iusto nulla officia placeat,
+                    sed?
+                    Aut beatae ea eum fuga fugiat illum laboriosam neque, odit quibusdam quo repudiandae sequi vitae. At
+                    commodi deleniti deserunt dicta doloremque eius est eum exercitationem explicabo facere facilis hic
+                    ipsum labore nisi, odio officia, omnis quasi quisquam, reprehenderit rerum sed similique ut
+                    voluptatibus. Aperiam atque inventore iusto nihil, non nostrum nulla porro quisquam rerum vitae?
+                    Culpa
+                    ipsum nam officiis vel.
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block layout:fragment="script">
+    <script type='text/javascript' th:src="@{/js/jquery.js}"></script>
+    <script type='text/javascript' th:src="@{/js/greensock.js}"></script>
+    <script type='text/javascript' th:src="@{/js/layerslider.kreaturamedia.jquery.js}"></script>
+    <script type='text/javascript' th:src="@{/js/layerslider.transitions.js}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            if (typeof jQuery.fn.layerSlider === "undefined") {
+                lsShowNotice('layerslider_1', 'jquery');
+            } else {
+                jQuery("#layerslider_1").layerSlider({hideOnMobile: true, hideUnder: 767, skinsPath: ''});
+            }
+        });
+    </script>
+</th:block>
+</html>

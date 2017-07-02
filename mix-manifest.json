@@ -1,0 +1,14 @@
+{
+  "/src/main/resources/static/js/app.js": "/src/main/resources/static/js/app.js",
+  "/src/main/resources/static/css/app.css": "/src/main/resources/static/css/app.css",
+  "/src/main/resources/static/js/main.js": "/src/main/resources/static/js/main.js",
+  "/src/main/resources/static/js/users.js": "/src/main/resources/static/js/users.js",
+  "/src/main/resources/static/js/layers.js": "/src/main/resources/static/js/layers.js",
+  "/src/main/resources/static/js/geoserver.js": "/src/main/resources/static/js/geoserver.js",
+  "/src/main/resources/static/js/editClaim.js": "/src/main/resources/static/js/editClaim.js",
+  "/src/main/resources/static/js/claims.js": "/src/main/resources/static/js/claims.js",
+  "/src/main/resources/static/js/urbUpdateMap.js": "/src/main/resources/static/js/urbUpdateMap.js",
+  "/src/main/resources/static/js/showClaim.js": "/src/main/resources/static/js/showClaim.js",
+  "/src/main/resources/static/js/editUser.js": "/src/main/resources/static/js/editUser.js",
+  "src/main/resources/static/css/all.css": "src/main/resources/static/css/all.css"
+}

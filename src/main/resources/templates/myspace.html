@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+    <title>Mon espace</title>
+</head>
+<main layout:fragment="page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-primary" id="edit">
+                    <div class="panel-heading user-edit">
+                        <div class="panel-title">{{ user.name }}</div>
+                        <i v-on:click="edit = !edit" class="fa fa-edit"></i>
+                        <i v-on:click="editUser" v-show="edit" class="fa fa-save"></i>
+                    </div>
+                    <div class="panel-body">
+                        <form class="post-form form-horizontal">
+                            <div class="form-group"
+                                 v-bind:class="{'has-error': form.errors.get('name')}">
+                                <label for="name" class="control-label col-md-4">Nom</label>
+                                <div class="col-md-8" v-show="edit">
+                                    <input id="name" v-model="form.model.name" type="text"
+                                           class="form-control"/>
+                                    <span class="help-block"><strong
+                                            v-text="form.errors.get('name')"></strong> </span>
+                                </div>
+                                <div class="col-md-8 control-label" v-show="!edit">
+                                    {{ user.name }}
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 v-bind:class="{'has-error': form.errors.get('email')}">
+                                <label for="useremail" class="control-label col-md-4">email</label>
+                                <div class="col-md-8" v-show="edit">
+                                    <input id="useremail" v-model="form.model.email" type="email"
+                                           class="form-control"/>
+                                    <span class="help-block"><strong
+                                            v-text="form.errors.get('email')"></strong> </span>
+                                </div>
+                                <div class="col-md-8 control-label" v-show="!edit">
+                                    {{ user.email }}
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 v-bind:class="{'has-error': form.errors.get('phone')}">
+                                <label for="phone" class="control-label col-md-4">Numéro du téléphone</label>
+                                <div class="col-md-8" v-show="edit">
+                                    <input id="phone" v-model="form.model.phone" type="phone"
+                                           class="form-control"/>
+                                    <span class="help-block"><strong
+                                            v-text="form.errors.get('phone')"></strong> </span>
+                                </div>
+                                <div class="col-md-8 control-label" v-show="!edit">
+                                    {{ user.phone }}
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 v-bind:class="{'has-error': form.errors.get('address')}">
+                                <label for="address" class="control-label col-md-4">Address</label>
+                                <div class="col-md-8" v-show="edit">
+                                    <input id="address" v-model="form.model.address" type="address"
+                                           class="form-control"/>
+                                    <span class="help-block"><strong
+                                            v-text="form.errors.get('address')"></strong> </span>
+                                </div>
+                                <div class="col-md-8 control-label" v-show="!edit">
+                                    {{ user.address }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="claims">
+                    <div>
+                        <div class="container-fluid claims">
+                            <div v-if="claims.length > 0" class="row" v-for="row in chunkedClaims">
+                                <div class="col-md-4" v-for="claim in row">
+                                    <div class="claim">
+                                        <div class="claim_photos">
+                                            <img v-if="claim.photos[0]" :src="claim.photos[0].thumbnail_path_url"/>
+                                        </div>
+                                        <div class="claim_content">
+                                            <div class="claim_title"><a :href="'/claims/'+claim.id"
+                                                                        v-text="claim.title"></a></div>
+                                            <div class="claim_infos">
+                                                <div class="infos">
+                                                    <i class="fa fa-user"></i> {{ claim.user.name }} |
+                                                    <i class="fa fa-clock-o"></i> {{ claim.updated_at }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="claim_footer">
+                                            <div class="claim_status">
+                                                <div class="bg-success" v-if="claim.feature.status === 'validée'">
+                                                    <i class="fa fa-check"></i> {{ claim.feature.status }}
+                                                </div>
+                                                <div class="bg-danger" v-if="claim.feature.status === 'annulée'">
+                                                    <i class="fa fa-close"></i> {{ claim.feature.status }}
+                                                </div>
+                                                <div class="bg-info" v-if="claim.feature.status === 'En instance'">
+                                                    <i class="fa fa-hourglass-start"></i> {{ claim.feature.status }}
+                                                </div>
+                                            </div>
+                                            <div class="dropup" v-if="isAdmin || isAgent">
+                                                <button class="btn dropdown-toggle" type="button"
+                                                        data-toggle="dropdown"><i
+                                                        class="fa fa-bars"></i></button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a :href="'/claims/'+claim.id+'/edit'"
+                                                           v-if="isAdmin || isAgent || claim.user.id ==user.id"
+                                                           class="btn btn-sm"><i class="fa fa-edit"></i> Modifier</a>
+                                                    </li>
+                                                    <li>
+                                                        <div class="claim_params" v-if="isAdmin || isAgent">
+                                                            <button v-on:click="validateFeature(claim.feature.id)"
+                                                                    v-if="
+                                claim.feature.status == 'annulée'" class
+                                                                            ="btn btn-success btn-sm"><i
+                                                                    class="fa fa-check"></i> Valider
+                                                            </button>
+                                                            <button v-on:click="validateFeature(claim.feature.id)"
+                                                                    v-if="
+                                claim.feature.status == 'En instance'"
+                                                                    class="btn btn-success btn-sm"><i
+                                                                    class="fa fa-check"></i> Valider
+                                                            </button>
+                                                            <button v-on:click="cancelFeature(claim.feature.id)" v-if="
+                                claim.feature.status == 'En instance'"
+                                                                    class="btn btn-danger btn-sm"><i
+                                                                    class="fa fa-trash"></i> Annuler
+                                                            </button>
+                                                            <button v-on:click="cancelFeature(claim.feature.id)" v-if="
+                                    claim.feature.status == 'validée'"
+                                                                    class="
+                        btn btn-danger btn-sm"><i
+                                                                    class="fa fa-trash"></i> Annuler
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="claims.length == 0" class="no-data">
+                                Pas de réclamations pour le moment
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block layout:fragment="script">
+    <script type='text/javascript' th:src="@{/js/editUser.js}"></script>
+    <script type='text/javascript' th:src="@{/js/claims.js}"></script>
+</th:block>
+</html>
