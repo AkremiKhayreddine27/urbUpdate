@@ -2,7 +2,6 @@ package com.urbupdate.model;
 
 
 import com.fasterxml.jackson.annotation.*;
-import com.sun.istack.internal.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -31,27 +30,6 @@ public class User implements Serializable, Notifiable {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Nullable
-    private String phone;
-
-    @Nullable
-    private String address;
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user",
