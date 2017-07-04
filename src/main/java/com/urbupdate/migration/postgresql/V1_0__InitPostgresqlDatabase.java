@@ -52,6 +52,8 @@ public class V1_0__InitPostgresqlDatabase implements SpringJdbcMigration {
                 + "   name VARCHAR(30) NOT NULL,\n"
                 + "   email VARCHAR(100) NOT NULL,\n"
                 + "   password VARCHAR(100) NOT NULL,\n"
+                + "   phone VARCHAR(100) NOT NULL,\n"
+                + "   address VARCHAR(100) NOT NULL,\n"
                 + "   created_at timestamp,\n"
                 + "   updated_at timestamp\n"
                 + ");";

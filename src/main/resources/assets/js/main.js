@@ -88,11 +88,12 @@ window.carte = new Vue({
             });
         },
         storeClaim(){
+            let vm = this;
             return new Promise(function (resolve, reject) {
-                this.form.post('/claims').then(response => {
-                    this.claim = response;
-                    this.zone.options.url = "/claims/" + this.claim.id + "/upload";
-                    this.zone.processQueue();
+                vm.form.post('/claims').then(response => {
+                    vm.claim = response;
+                    vm.zone.options.url = "/claims/" + vm.claim.id + "/upload";
+                    vm.zone.processQueue();
                     resolve();
                 });
             });

@@ -165,13 +165,12 @@ window.carte = new Vue({
             });
         },
         storeClaim: function storeClaim() {
+            var vm = this;
             return new Promise(function (resolve, reject) {
-                var _this2 = this;
-
-                this.form.post('/claims').then(function (response) {
-                    _this2.claim = response;
-                    _this2.zone.options.url = "/claims/" + _this2.claim.id + "/upload";
-                    _this2.zone.processQueue();
+                vm.form.post('/claims').then(function (response) {
+                    vm.claim = response;
+                    vm.zone.options.url = "/claims/" + vm.claim.id + "/upload";
+                    vm.zone.processQueue();
                     resolve();
                 });
             });
@@ -220,11 +219,11 @@ window.carte = new Vue({
         }
     },
     mounted: function mounted() {
-        var _this3 = this;
+        var _this2 = this;
 
         this.getAuth().then(function () {
-            _this3.getAllCouches();
-            console.log(_this3.isAdmin());
+            _this2.getAllCouches();
+            console.log(_this2.isAdmin());
         });
         var vm = this;
         Dropzone.autoDiscover = false;
