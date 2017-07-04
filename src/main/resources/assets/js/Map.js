@@ -346,19 +346,19 @@ export class Map {
                                     claims.forEach(function (claim) {
                                         var emptyImgStyle = new ol.style.Style({image: ''});
                                         if (feature.get(_this.layers_primary_key)) {
-                                            if (feature.get(_this.layers_primary_key) === parseInt(claim.id) && claim.status === 'annulé') {
+                                            if (feature.get(_this.layers_primary_key) === parseInt(claim.id) && claim.status === 'annulée') {
                                                 feature.setStyle(emptyImgStyle);
                                             }
                                             if (feature.get(_this.layers_primary_key) === parseInt(claim.id) && claim.status === 'En instance') {
-                                                if (carte.isAdmin()) {
+                                                if (carte.isAdmin() || carte.isAgent()) {
                                                     let coordinate = ol.proj.transform([claim.lon, claim.lat], 'EPSG:4326', 'EPSG:3857');
                                                     var popup = new ol.Overlay.Popup({insertFirst: false});
                                                     _this.map.addOverlay(popup);
                                                     popup.show(coordinate, '<div>' +
                                                         '<p>' + claim.claim.user.name + '</p>' +
                                                         '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' +
-                                                        '<a style="margin-top: 10px" class="btn btn-success btn-sm" onclick="carte.validateFeature(' + claim.claim + ')"><i class="fa fa-check"></i> valider</a>' +
-                                                        '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim + ')"><i class="fa fa-close"></i> annuler</a>' +
+                                                        '<a style="margin-top: 10px" class="btn btn-success btn-sm" onclick="carte.validateFeature(' + claim.claim.id + ')"><i class="fa fa-check"></i> valider</a>' +
+                                                        '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' +
                                                         '</div>');
                                                 } else if (claim.claim.user.id === carte.user.id) {
                                                     let coordinate = ol.proj.transform([claim.lon, claim.lat], 'EPSG:4326', 'EPSG:3857');
@@ -367,7 +367,7 @@ export class Map {
                                                     popup.show(coordinate, '<div>' +
                                                         '<p>Votre réclamation</p>' +
                                                         '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' +
-                                                        '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim + ')"><i class="fa fa-close"></i> annuler</a>' +
+                                                        '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' +
                                                         '</div>');
                                                 } else {
                                                     feature.setStyle(emptyImgStyle);
@@ -488,6 +488,15 @@ export class Map {
                 "</div>");
         });
         return _this.layersWFS_array;
+    }
+
+
+    removeLayerFromMap(layerName) {
+        this.map.removeLayer(this.layers[layerName]);
+    }
+
+    addLayerToMap(layerName) {
+        this.map.addLayer(this.layersWFS_array[layerName]);
     }
 
     detectActionButton() {
@@ -791,16 +800,19 @@ export class Map {
                         var feature = response.features[0];
                         if (feature !== undefined) {
                             var props = feature.properties;
-                            info += '<h2 style="font-size:14px;color:#FFFFFF;display:inline;margin-bottom:15px;font-weight:bold;border-bottom:1px solid #FFFFFF">' + key + '</h2><div style="color:#ffffff;border: none;line-height:30px;padding:10px;font-size:13px">';
+                            info += '<h2 style="font-size:14px;color:#EF662F;display:inline;margin-bottom:15px;font-weight:bold;border-bottom:1px solid #FFFFFF">' + key + '</h2><div style="color:#888888;border: none;line-height:30px;padding:10px;font-size:13px">';
                             jQuery.each(props, function (key, value) {
                                 info += '<div class="col-md-4">' + key + ':</div><div class="col-md-8">' + value + '</div>';
                             });
-                            axios.get('/features/' + evt.selected[0].get(_this.layers_primary_key)).then(response => {
+                            axios.get('/api/features/' + evt.selected[0].get(_this.layers_primary_key)).then(response => {
                                 info += '<div class="col-md-12 alert alert-danger">' +
                                     '<ul style="list-style: none;margin: 0;padding: 0">' +
-                                    '<li>' + response.data.claim.title + '</li>' +
-                                    '<li>' + response.data.claim.description + '</li>' +
-                                    '</ul></div>';
+                                    '<li>' + response.data.claim.title + '</li><li><ul style="display: flex;flex-wrap: wrap">';
+
+                                for (let photo in response.data.claim.photos) {
+                                    info += '<li style="padding: 3px;"><img style="width:94px" src="' + response.data.claim.photos[photo].path + '" /></li>';
+                                }
+                                info += '</ul></li></ul></div>';
                                 info += '</div>';
                                 jQuery("#infosPopup").show();
                                 jQuery("#infosPopup-bottom").show();

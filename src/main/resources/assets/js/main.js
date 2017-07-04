@@ -8,10 +8,11 @@ window.carte = new Vue({
         gMapCheckbox: true,
         positionCheckbox: false,
         zone: {},
+        map: {},
         claim: {
             id: 0
         },
-        geoserver:{},
+        geoserver: {},
         form: new Form({
             model: {
                 title: '',
@@ -24,9 +25,9 @@ window.carte = new Vue({
     },
     methods: {
         getAuth(){
-            let _this =this;
-            return new Promise(function(resolve,reject){
-                axios.get('/auth').then(response=> {
+            let _this = this;
+            return new Promise(function (resolve, reject) {
+                axios.get('/auth').then(response => {
                     _this.user = response.data;
                     let roles = [];
                     for (let role in _this.user.roles) {
@@ -45,14 +46,22 @@ window.carte = new Vue({
                 return false;
             }
         },
+        isAgent(){
+            for (let role in this.user.roles) {
+                if (this.user.roles[role] == 2) {
+                    return true
+                }
+                return false;
+            }
+        },
         getAllCouches(){
             let vm = this;
             axios.post('getAllCouches').then(function (response) {
                 axios.get('admin/geoserver').then(config => {
-                    vm.geoserver =  config.data;
-                    const map = new Map({
+                    vm.geoserver = config.data;
+                    vm.map = new Map({
                         layers: response.data,
-                        defaultLayer: 'batdf_Project2_Clip',  
+                        defaultLayer: 'batdf_Project2_Clip',
                         workspace: config.data.workspace,
                         srsName: config.data.srsName,
                         featureNS: config.data.featureNS,
@@ -60,46 +69,80 @@ window.carte = new Vue({
                         btnSelect: $('#btnSelect'),
                         btnDelete: $('#btnDelete'),
                         btnDraw: $('#btnArea'),
-                        btnEdit:$('#btnEdit'),
+                        btnEdit: $('#btnEdit'),
                         btnPoint: $('#btnPoint'),
                         btnLine: $('#btnLine'),
                         btnMesure: $('#btnMesure'),
                         google: false,
-                        layers_primary_key:config.data.layers_primary_key
+                        layers_primary_key: config.data.layers_primary_key
                     });
-                    let layersWFS_array = map.addLayersToMap();
-                    map.detectActionButton();
+                    let layersWFS_array = vm.map.addLayersToMap();
+                    vm.map.detectActionButton();
+                    //vm.map.renderSync();
                 });
             });
         },
         saveClaim(){
-            this.form.post('/claims').then(response=> {
-                this.claim = response;
-                this.zone.options.url = "/claims/" + this.claim.id + "/upload";
-                this.zone.processQueue();
-                this.getAllCouches();
-                $('#closeClaim').click();
+            this.storeClaim().then(()=>{
+                window.location.reload();
             });
         },
-        validateFeature(feature){
-            axios.patch('/features/' + feature, {
-                status: 'validé'
-            }).then(response=> {
-                this.getAllCouches();
-                Event.$emit('alert','Votre modification a été enregistrer avec succé');
+        storeClaim(){
+            return new Promise(function (resolve, reject) {
+                this.form.post('/claims').then(response => {
+                    this.claim = response;
+                    this.zone.options.url = "/claims/" + this.claim.id + "/upload";
+                    this.zone.processQueue();
+                    resolve();
+                });
             });
         },
-        cancelFeature(feature){
-            axios.patch('/features/' + feature, {
-                status: 'annulé'
-            }).then(response=> {
-                this.getAllCouches();
-                Event.$emit('alert','Votre modification a été enregistrer avec succé');
+        validateFeature(claim){
+            let newClaim = {};
+            axios.get('/api/claims/' + claim).then(response => {
+                newClaim.id = response.data.id;
+                newClaim.title = response.data.title;
+                newClaim.description = response.data.description;
+                newClaim.created_at = response.data.created_at;
+                newClaim.user = response.data.user;
+                newClaim.feature = response.data.feature;
+                // this.form.model.adjustments = response.data.adjustments;
+                newClaim.photos = response.data.photos;
+                newClaim.updated_at = moment();
+                axios.patch('/api/features/' + response.data.feature.id, {
+                    status: 'validée',
+                    claim: newClaim
+                }).then(response => {
+                    window.location.reload();
+                    Event.$emit('alert', 'Votre modification a été enregistrer avec succé');
+                });
+
+            });
+        },
+        cancelFeature(claim){
+            let newClaim = {};
+            axios.get('/api/claims/' + claim).then(response => {
+                newClaim.id = response.data.id;
+                newClaim.title = response.data.title;
+                newClaim.description = response.data.description;
+                newClaim.created_at = response.data.created_at;
+                newClaim.user = response.data.user;
+                newClaim.feature = response.data.feature;
+                // this.form.model.adjustments = response.data.adjustments;
+                newClaim.photos = response.data.photos;
+                newClaim.updated_at = moment();
+                axios.patch('/api/features/' + response.data.feature.id, {
+                    status: 'annulée',
+                    claim: newClaim
+                }).then(response => {
+                    window.location.reload();
+                    Event.$emit('alert', 'Votre modification a été enregistrer avec succé');
+                });
             });
         }
     },
     mounted(){
-        this.getAuth().then(()=>{
+        this.getAuth().then(() => {
             this.getAllCouches();
             console.log(this.isAdmin());
         });
@@ -111,7 +154,7 @@ window.carte = new Vue({
             uploadMultiple: true,
             parallelUploads: 100,
             maxFiles: 100,
-            dictDefaultMessage:'Déposez vos photos ici',
+            dictDefaultMessage: 'Déposez vos photos ici',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }

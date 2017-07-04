@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "features")
@@ -25,9 +26,14 @@ public class Feature {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @OneToOne
-    @JoinColumn(name="claim_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "claim_id")
     private Claim claim;
+
+    @PreUpdate
+    private void updateParentUpdatedAt() {
+        this.claim.setUpdated_at(new Date());
+    }
 
     public Integer getId() {
         return id;

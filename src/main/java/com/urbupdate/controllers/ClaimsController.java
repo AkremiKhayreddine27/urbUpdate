@@ -60,13 +60,23 @@ public class ClaimsController {
     }
 
     @RequestMapping("/claims/{claim}")
-    public String show() {
-        return "claims/show";
+    public String show(@PathVariable Integer claim) {
+        Claim claim1 = claimsRepository.findOne(claim);
+        if (claim1 != null) {
+            return "claims/show";
+        } else {
+            return "redirect:/404";
+        }
     }
 
     @RequestMapping("/claims/{claim}/edit")
-    public String edit() {
-        return "claims/edit";
+    public String edit(@PathVariable Integer claim) {
+        Claim claim1 = claimsRepository.findOne(claim);
+        if (claim1 != null) {
+            return "claims/edit";
+        } else {
+            return "redirect:/404";
+        }
     }
 
     @RequestMapping(value = "/claims/{id}", method = RequestMethod.PATCH)

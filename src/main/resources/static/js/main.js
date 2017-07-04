@@ -85,6 +85,7 @@ window.carte = new Vue({
         gMapCheckbox: true,
         positionCheckbox: false,
         zone: {},
+        map: {},
         claim: {
             id: 0
         },
@@ -122,12 +123,20 @@ window.carte = new Vue({
                 return false;
             }
         },
+        isAgent: function isAgent() {
+            for (var role in this.user.roles) {
+                if (this.user.roles[role] == 2) {
+                    return true;
+                }
+                return false;
+            }
+        },
         getAllCouches: function getAllCouches() {
             var vm = this;
             axios.post('getAllCouches').then(function (response) {
                 axios.get('admin/geoserver').then(function (config) {
                     vm.geoserver = config.data;
-                    var map = new __WEBPACK_IMPORTED_MODULE_0__Map__["a" /* Map */]({
+                    vm.map = new __WEBPACK_IMPORTED_MODULE_0__Map__["a" /* Map */]({
                         layers: response.data,
                         defaultLayer: 'batdf_Project2_Clip',
                         workspace: config.data.workspace,
@@ -144,49 +153,78 @@ window.carte = new Vue({
                         google: false,
                         layers_primary_key: config.data.layers_primary_key
                     });
-                    var layersWFS_array = map.addLayersToMap();
-                    map.detectActionButton();
+                    var layersWFS_array = vm.map.addLayersToMap();
+                    vm.map.detectActionButton();
+                    //vm.map.renderSync();
                 });
             });
         },
         saveClaim: function saveClaim() {
-            var _this2 = this;
-
-            this.form.post('/claims').then(function (response) {
-                _this2.claim = response;
-                _this2.zone.options.url = "/claims/" + _this2.claim.id + "/upload";
-                _this2.zone.processQueue();
-                _this2.getAllCouches();
-                $('#closeClaim').click();
+            this.storeClaim().then(function () {
+                window.location.reload();
             });
         },
-        validateFeature: function validateFeature(feature) {
-            var _this3 = this;
+        storeClaim: function storeClaim() {
+            return new Promise(function (resolve, reject) {
+                var _this2 = this;
 
-            axios.patch('/features/' + feature, {
-                status: 'validé'
-            }).then(function (response) {
-                _this3.getAllCouches();
-                Event.$emit('alert', 'Votre modification a été enregistrer avec succé');
+                this.form.post('/claims').then(function (response) {
+                    _this2.claim = response;
+                    _this2.zone.options.url = "/claims/" + _this2.claim.id + "/upload";
+                    _this2.zone.processQueue();
+                    resolve();
+                });
             });
         },
-        cancelFeature: function cancelFeature(feature) {
-            var _this4 = this;
-
-            axios.patch('/features/' + feature, {
-                status: 'annulé'
-            }).then(function (response) {
-                _this4.getAllCouches();
-                Event.$emit('alert', 'Votre modification a été enregistrer avec succé');
+        validateFeature: function validateFeature(claim) {
+            var newClaim = {};
+            axios.get('/api/claims/' + claim).then(function (response) {
+                newClaim.id = response.data.id;
+                newClaim.title = response.data.title;
+                newClaim.description = response.data.description;
+                newClaim.created_at = response.data.created_at;
+                newClaim.user = response.data.user;
+                newClaim.feature = response.data.feature;
+                // this.form.model.adjustments = response.data.adjustments;
+                newClaim.photos = response.data.photos;
+                newClaim.updated_at = moment();
+                axios.patch('/api/features/' + response.data.feature.id, {
+                    status: 'validée',
+                    claim: newClaim
+                }).then(function (response) {
+                    window.location.reload();
+                    Event.$emit('alert', 'Votre modification a été enregistrer avec succé');
+                });
+            });
+        },
+        cancelFeature: function cancelFeature(claim) {
+            var newClaim = {};
+            axios.get('/api/claims/' + claim).then(function (response) {
+                newClaim.id = response.data.id;
+                newClaim.title = response.data.title;
+                newClaim.description = response.data.description;
+                newClaim.created_at = response.data.created_at;
+                newClaim.user = response.data.user;
+                newClaim.feature = response.data.feature;
+                // this.form.model.adjustments = response.data.adjustments;
+                newClaim.photos = response.data.photos;
+                newClaim.updated_at = moment();
+                axios.patch('/api/features/' + response.data.feature.id, {
+                    status: 'annulée',
+                    claim: newClaim
+                }).then(function (response) {
+                    window.location.reload();
+                    Event.$emit('alert', 'Votre modification a été enregistrer avec succé');
+                });
             });
         }
     },
     mounted: function mounted() {
-        var _this5 = this;
+        var _this3 = this;
 
         this.getAuth().then(function () {
-            _this5.getAllCouches();
-            console.log(_this5.isAdmin());
+            _this3.getAllCouches();
+            console.log(_this3.isAdmin());
         });
         var vm = this;
         Dropzone.autoDiscover = false;
@@ -743,20 +781,20 @@ var Map = function () {
                                     claims.forEach(function (claim) {
                                         var emptyImgStyle = new ol.style.Style({ image: '' });
                                         if (feature.get(_this.layers_primary_key)) {
-                                            if (feature.get(_this.layers_primary_key) === parseInt(claim.id) && claim.status === 'annulé') {
+                                            if (feature.get(_this.layers_primary_key) === parseInt(claim.id) && claim.status === 'annulée') {
                                                 feature.setStyle(emptyImgStyle);
                                             }
                                             if (feature.get(_this.layers_primary_key) === parseInt(claim.id) && claim.status === 'En instance') {
-                                                if (carte.isAdmin()) {
+                                                if (carte.isAdmin() || carte.isAgent()) {
                                                     var coordinate = ol.proj.transform([claim.lon, claim.lat], 'EPSG:4326', 'EPSG:3857');
                                                     var popup = new ol.Overlay.Popup({ insertFirst: false });
                                                     _this.map.addOverlay(popup);
-                                                    popup.show(coordinate, '<div>' + '<p>' + claim.claim.user.name + '</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' + '<a style="margin-top: 10px" class="btn btn-success btn-sm" onclick="carte.validateFeature(' + claim.claim + ')"><i class="fa fa-check"></i> valider</a>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
+                                                    popup.show(coordinate, '<div>' + '<p>' + claim.claim.user.name + '</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' + '<a style="margin-top: 10px" class="btn btn-success btn-sm" onclick="carte.validateFeature(' + claim.claim.id + ')"><i class="fa fa-check"></i> valider</a>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
                                                 } else if (claim.claim.user.id === carte.user.id) {
                                                     var _coordinate = ol.proj.transform([claim.lon, claim.lat], 'EPSG:4326', 'EPSG:3857');
                                                     var popup = new ol.Overlay.Popup({ insertFirst: false });
                                                     _this.map.addOverlay(popup);
-                                                    popup.show(_coordinate, '<div>' + '<p>Votre réclamation</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
+                                                    popup.show(_coordinate, '<div>' + '<p>Votre réclamation</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
                                                 } else {
                                                     feature.setStyle(emptyImgStyle);
                                                 }
@@ -873,6 +911,16 @@ var Map = function () {
                 jQuery("#legende").append("" + "<div style='flex-basis: 50%;display: flex;'>" + "<div style='background-color: " + _this.layers[key]['color'] + "' class='slideThree'>" + "<input id='" + _this.layers[key]['name'] + "' type='checkbox' />" + "<label for='" + _this.layers[key]['name'] + "'></label>" + "</div>" + "<p style='margin-left: 5px'>" + _this.layers[key]['name'] + "</p>" + "</div>");
             });
             return _this.layersWFS_array;
+        }
+    }, {
+        key: 'removeLayerFromMap',
+        value: function removeLayerFromMap(layerName) {
+            this.map.removeLayer(this.layers[layerName]);
+        }
+    }, {
+        key: 'addLayerToMap',
+        value: function addLayerToMap(layerName) {
+            this.map.addLayer(this.layersWFS_array[layerName]);
         }
     }, {
         key: 'detectActionButton',
@@ -1179,12 +1227,17 @@ var Map = function () {
                             var feature = response.features[0];
                             if (feature !== undefined) {
                                 var props = feature.properties;
-                                info += '<h2 style="font-size:14px;color:#FFFFFF;display:inline;margin-bottom:15px;font-weight:bold;border-bottom:1px solid #FFFFFF">' + key + '</h2><div style="color:#ffffff;border: none;line-height:30px;padding:10px;font-size:13px">';
+                                info += '<h2 style="font-size:14px;color:#EF662F;display:inline;margin-bottom:15px;font-weight:bold;border-bottom:1px solid #FFFFFF">' + key + '</h2><div style="color:#888888;border: none;line-height:30px;padding:10px;font-size:13px">';
                                 jQuery.each(props, function (key, value) {
                                     info += '<div class="col-md-4">' + key + ':</div><div class="col-md-8">' + value + '</div>';
                                 });
-                                axios.get('/features/' + evt.selected[0].get(_this.layers_primary_key)).then(function (response) {
-                                    info += '<div class="col-md-12 alert alert-danger">' + '<ul style="list-style: none;margin: 0;padding: 0">' + '<li>' + response.data.claim.title + '</li>' + '<li>' + response.data.claim.description + '</li>' + '</ul></div>';
+                                axios.get('/api/features/' + evt.selected[0].get(_this.layers_primary_key)).then(function (response) {
+                                    info += '<div class="col-md-12 alert alert-danger">' + '<ul style="list-style: none;margin: 0;padding: 0">' + '<li>' + response.data.claim.title + '</li><li><ul style="display: flex;flex-wrap: wrap">';
+
+                                    for (var photo in response.data.claim.photos) {
+                                        info += '<li style="padding: 3px;"><img style="width:94px" src="' + response.data.claim.photos[photo].path + '" /></li>';
+                                    }
+                                    info += '</ul></li></ul></div>';
                                     info += '</div>';
                                     jQuery("#infosPopup").show();
                                     jQuery("#infosPopup-bottom").show();

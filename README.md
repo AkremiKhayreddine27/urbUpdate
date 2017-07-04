@@ -36,7 +36,9 @@
   
   - Install Geoserver 2.11.0
   
-  - Navigate to the Geoserver path `C:\Program Files (x86)\GeoServer 2.11.0\webapps\geoserver\WEB-INF` and add those lines to `web.xml`:
+  - Enable cross-origin in geoserver (A resource makes a cross-origin HTTP request when it requests a resource from a different domain, protocol, or port to its own) in our case (on localhost) our application will run on port 8090 but geoserver run on port 8080  
+  
+    - Navigate to the Geoserver path `C:\Program Files (x86)\GeoServer 2.11.0\webapps\geoserver\WEB-INF` and add those lines to `web.xml`:
   
     ```xml
         <filter>
@@ -48,12 +50,8 @@
             <url-pattern>/*</url-pattern>
         </filter-mapping>
     ```
-  - And copy into `C:\Program Files (x86)\GeoServer 2.10.0\webapps\geoserver\WEB-INF\lib` folder : `jetty-servlets-9.2.13.v20150730.jar`
+    - And copy into `C:\Program Files (x86)\GeoServer 2.10.0\webapps\geoserver\WEB-INF\lib` folder : `jetty-servlets-9.2.13.v20150730.jar`
     Get jar needed from `http://central.maven.org/maven2/org/eclipse/jetty/jetty-servlets/`
     
   - Navigate to your application folder and run `run.bat` 
         
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d15b98e65b97dc207252cda58d64e389a255a49

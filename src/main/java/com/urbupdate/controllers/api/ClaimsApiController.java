@@ -36,7 +36,7 @@ public class ClaimsApiController {
 
     @RequestMapping("/claims")
     public List<Claim> listClaims() {
-        return claimsRepository.findAll();
+        return claimsRepository.findAllByOrderByUpdatedAtDesc();
     }
 
     @RequestMapping(value = "/claims/{claim}", method = RequestMethod.GET)
@@ -71,6 +71,12 @@ public class ClaimsApiController {
         Feature newFeature = feature1;
         adjust(featureStatus.getClaim(), feature1.getClaim());
         featuresRepository.save(feature1);
+    }
+
+    @RequestMapping(value = "/features/{id}", method = RequestMethod.GET)
+    public Feature getFeature(@PathVariable Integer id) {
+        Feature feature = featuresRepository.findOne(id);
+        return feature;
     }
 
     public void adjust(Claim dirty, Claim claim) {

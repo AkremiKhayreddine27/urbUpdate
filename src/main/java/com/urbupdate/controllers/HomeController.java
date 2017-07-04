@@ -29,7 +29,7 @@ public class HomeController {
     @RequestMapping(value = {"/404"}, method = RequestMethod.GET)
     public String NotFoudPage(ModelMap model) {
         model.addAttribute("loggedinuser", getPrincipal());
-        return "error/pagenotfound";
+        return "error/404";
     }
 
 

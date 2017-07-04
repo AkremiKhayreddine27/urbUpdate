@@ -9,6 +9,7 @@ import com.urbupdate.repositories.LayersRepository;
 import it.geosolutions.geoserver.rest.GeoServerRESTPublisher;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class MapController {
     @Autowired
     private FeaturesRepository featuresRepository;
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/map")
     public String index() {
         return "map";

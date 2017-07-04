@@ -31,12 +31,14 @@ public class Claim {
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type = "date")
     @CreationTimestamp
-    private Date created_at;
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
 
 
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    private Date updated_at;
+    @Column(name = "updated_at", nullable = false)
+    private Date updatedAt;
 
 
     @ManyToOne
@@ -50,6 +52,7 @@ public class Claim {
 
 
     @OneToMany(mappedBy = "claim")
+    @OrderBy("updatedAt DESC")
     private Collection<Adjustment> adjustments;
 
     public Collection<Adjustment> getAdjustments() {
@@ -113,19 +116,19 @@ public class Claim {
     }
 
     public Date getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
     public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
+        this.updatedAt = updated_at;
     }
 
     public Date getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
     public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+        this.createdAt = created_at;
     }
 
     @Override

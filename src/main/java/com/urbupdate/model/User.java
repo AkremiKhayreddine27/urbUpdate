@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -21,6 +23,7 @@ public class User implements Serializable, Notifiable {
     private Integer id;
 
     @Column(name = "NAME", nullable = false)
+    @NotNull
     private String name;
 
     @Column(name = "PASSWORD", nullable = false)
@@ -30,6 +33,27 @@ public class User implements Serializable, Notifiable {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
+    @Nullable
+    private String phone;
+
+    @Nullable
+    private String address;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user",
@@ -41,6 +65,7 @@ public class User implements Serializable, Notifiable {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
+    @OrderBy("updatedAt DESC")
     private Collection<Claim> claims;
 
 

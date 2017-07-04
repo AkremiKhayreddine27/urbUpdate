@@ -7,5 +7,5 @@ import java.util.List;
 
 
 public interface ClaimsRepository extends JpaRepository<Claim, Integer> {
-
+    public List<Claim> findAllByOrderByUpdatedAtDesc();
 }
