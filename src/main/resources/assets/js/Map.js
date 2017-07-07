@@ -85,6 +85,54 @@ export class Map {
         this.pointerMove = pointerMove;
     }
 
+    initGeolocation(is_active) {
+        if (is_active) {
+            console.log("Geolocation is "+is_active);
+            let _this = this;
+            var geolocation = new ol.Geolocation({
+                projection: _this.map.getView().getProjection()
+            });
+            var accuracyFeature = new ol.Feature();
+            geolocation.on('change:accuracyGeometry', function () {
+                accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+            });
+            var positionFeature = new ol.Feature();
+            positionFeature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 6,
+                    fill: new ol.style.Fill({
+                        color: '#3399CC'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#fff',
+                        width: 2
+                    })
+                })
+            }));
+            geolocation.on('change:position', function () {
+                var coordinates = geolocation.getPosition();
+                positionFeature.setGeometry(coordinates ?
+                    new ol.geom.Point(coordinates) : null);
+            });
+
+            let geoLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [accuracyFeature, positionFeature]
+                })
+            }); 
+            geoLayer.set('name', 'geoLayer');
+            _this.map.addLayer(geoLayer);
+            geolocation.setTracking(is_active);
+        } else {
+            let _this = this;
+            this.map.getLayers().forEach(function (lyr) {
+                if ('geoLayer' == lyr.get('name')) {
+                    _this.map.removeLayer(lyr);
+                }
+            });
+        }
+    }
+
     createMap() {
         let _this = this;
         var mousePositionControl = new ol.control.MousePosition({
@@ -145,6 +193,7 @@ export class Map {
             olMapDiv.parentNode.removeChild(olMapDiv);
             gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(olMapDiv);
         } else if (this.bing) {
+            console.log("bing map");
             let l = new ol.layer.Tile({
                 visible: true,
                 preload: Infinity,
@@ -460,7 +509,7 @@ export class Map {
     addLayersToMap() {
         let _this = this;
         _this.createMap();
-        jQuery("#legende").html('<h2>Legend</h2>');
+        jQuery("#legende").html('<h2>Légende</h2>');
         jQuery.each(_this.layers, function (key, value) {
             _this.formatGeoJSON_array[_this.layers[key]['name']] = _this.createFormatGeoJSON(_this.layers[key]['name']);
             _this.getGeometryType(_this.layers[key]['name'], key).then(geometryType => {
@@ -470,12 +519,6 @@ export class Map {
                 _this.layersWFS_array[_this.layers[key]['name']] = _this.createLayerWFS(_this.layers[key]['name']);
                 _this.map.addLayer(_this.layersWFS_array[_this.layers[key]['name']]);
             });
-            if (_this.google || _this.bing) {
-                _this.map.getView().fit(ol.proj.transformExtent(_this.bounds, _this.srsName, 'EPSG:3857'), _this.map.getSize());
-                _this.map.getView().setZoom(7);
-            } else {
-                _this.map.getView().fit(_this.bounds, _this.map.getSize());
-            }
             var storage = jQuery.localStorage;
             storage.set(key, 'checked');
             jQuery("#legende").append("" +
@@ -487,6 +530,12 @@ export class Map {
                 "<p style='margin-left: 5px'>" + _this.layers[key]['name'] + "</p>" +
                 "</div>");
         });
+        if (_this.google || _this.bing) {
+            _this.map.getView().fit(ol.proj.transformExtent(_this.bounds, _this.srsName, 'EPSG:3857'), _this.map.getSize());
+            _this.map.getView().setZoom(7);
+        } else {
+            _this.map.getView().fit(_this.bounds, _this.map.getSize());
+        }
         return _this.layersWFS_array;
     }
 

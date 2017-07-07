@@ -11,24 +11,24 @@ var projection = new ol.proj.Projection({
 var nv = new ol.layer.Image({
     source: new ol.source.ImageWMS({
         ratio: 1,
-        url: 'http://localhost:8080/geoserver/sabrine/wms',
+        url: 'http://localhost:8080/geoserver/urbupdate/wms',
         params: {
             'FORMAT': format,
             'VERSION': '1.1.1',
             STYLES: '',
-            LAYERS: 'sabrine:geotiff_coverage_nv',
+            LAYERS: 'urbupdate:geotiff_coverage_nv',
         }
     })
 });
 var anc = new ol.layer.Image({
     source: new ol.source.ImageWMS({
         ratio: 1,
-        url: 'http://localhost:8080/geoserver/sabrine/wms',
+        url: 'http://localhost:8080/geoserver/urbupdate/wms',
         params: {
             'FORMAT': format,
             'VERSION': '1.1.1',
             STYLES: '',
-            LAYERS: 'sabrine:geotiff_coverage_anc',
+            LAYERS: 'urbupdate:geotiff_coverage_anc',
         }
     })
 });

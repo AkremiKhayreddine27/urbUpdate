@@ -165,6 +165,9 @@ window.carte = new Vue({
         gMapCheckbox: function (value) {
             this.getAllCouches();
         },
+        positionCheckbox: function (value) {
+            this.map.initGeolocation(value);
+        }
     },
 });
 ol.Feature.prototype.getLayer = function (map) {

@@ -243,6 +243,9 @@ window.carte = new Vue({
     watch: {
         gMapCheckbox: function gMapCheckbox(value) {
             this.getAllCouches();
+        },
+        positionCheckbox: function positionCheckbox(value) {
+            this.map.initGeolocation(value);
         }
     }
 });
@@ -522,6 +525,54 @@ var Map = function () {
     }
 
     _createClass(Map, [{
+        key: 'initGeolocation',
+        value: function initGeolocation(is_active) {
+            if (is_active) {
+                console.log("Geolocation is " + is_active);
+                var _this = this;
+                var geolocation = new ol.Geolocation({
+                    projection: _this.map.getView().getProjection()
+                });
+                var accuracyFeature = new ol.Feature();
+                geolocation.on('change:accuracyGeometry', function () {
+                    accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+                });
+                var positionFeature = new ol.Feature();
+                positionFeature.setStyle(new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 6,
+                        fill: new ol.style.Fill({
+                            color: '#3399CC'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#fff',
+                            width: 2
+                        })
+                    })
+                }));
+                geolocation.on('change:position', function () {
+                    var coordinates = geolocation.getPosition();
+                    positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+                });
+
+                var geoLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: [accuracyFeature, positionFeature]
+                    })
+                });
+                geoLayer.set('name', 'geoLayer');
+                _this.map.addLayer(geoLayer);
+                geolocation.setTracking(is_active);
+            } else {
+                var _this2 = this;
+                this.map.getLayers().forEach(function (lyr) {
+                    if ('geoLayer' == lyr.get('name')) {
+                        _this2.map.removeLayer(lyr);
+                    }
+                });
+            }
+        }
+    }, {
         key: 'createMap',
         value: function createMap() {
             var _this = this;
@@ -575,6 +626,7 @@ var Map = function () {
                 olMapDiv.parentNode.removeChild(olMapDiv);
                 gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(olMapDiv);
             } else if (this.bing) {
+                console.log("bing map");
                 var l = new ol.layer.Tile({
                     visible: true,
                     preload: Infinity,
@@ -889,7 +941,7 @@ var Map = function () {
         value: function addLayersToMap() {
             var _this = this;
             _this.createMap();
-            jQuery("#legende").html('<h2>Legend</h2>');
+            jQuery("#legende").html('<h2>Légende</h2>');
             jQuery.each(_this.layers, function (key, value) {
                 _this.formatGeoJSON_array[_this.layers[key]['name']] = _this.createFormatGeoJSON(_this.layers[key]['name']);
                 _this.getGeometryType(_this.layers[key]['name'], key).then(function (geometryType) {
@@ -899,16 +951,16 @@ var Map = function () {
                     _this.layersWFS_array[_this.layers[key]['name']] = _this.createLayerWFS(_this.layers[key]['name']);
                     _this.map.addLayer(_this.layersWFS_array[_this.layers[key]['name']]);
                 });
-                if (_this.google || _this.bing) {
-                    _this.map.getView().fit(ol.proj.transformExtent(_this.bounds, _this.srsName, 'EPSG:3857'), _this.map.getSize());
-                    _this.map.getView().setZoom(7);
-                } else {
-                    _this.map.getView().fit(_this.bounds, _this.map.getSize());
-                }
                 var storage = jQuery.localStorage;
                 storage.set(key, 'checked');
                 jQuery("#legende").append("" + "<div style='flex-basis: 50%;display: flex;'>" + "<div style='background-color: " + _this.layers[key]['color'] + "' class='slideThree'>" + "<input id='" + _this.layers[key]['name'] + "' type='checkbox' />" + "<label for='" + _this.layers[key]['name'] + "'></label>" + "</div>" + "<p style='margin-left: 5px'>" + _this.layers[key]['name'] + "</p>" + "</div>");
             });
+            if (_this.google || _this.bing) {
+                _this.map.getView().fit(ol.proj.transformExtent(_this.bounds, _this.srsName, 'EPSG:3857'), _this.map.getSize());
+                _this.map.getView().setZoom(7);
+            } else {
+                _this.map.getView().fit(_this.bounds, _this.map.getSize());
+            }
             return _this.layersWFS_array;
         }
     }, {
