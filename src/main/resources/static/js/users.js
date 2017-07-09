@@ -94,6 +94,7 @@ window.users = new Vue({
                 name: '',
                 email: '',
                 password: '',
+                matchingPassword: '',
                 roles: []
             }
         })
@@ -160,6 +161,11 @@ window.users = new Vue({
         addUser: function addUser() {
             var _this5 = this;
 
+            for (var i in this.form.model.roles) {
+                this.form.model.roles[i] = this.getRole(this.form.model.roles[i]);
+            }
+            this.form.model.phone = "";
+            this.form.model.address = "";
             this.form.post('/api/users').then(function (data) {
                 $('#closeUserModal').click();
                 _this5.getUsers();

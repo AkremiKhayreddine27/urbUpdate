@@ -129,11 +129,16 @@ var showClaim = new Vue({
 
             var newClaim = {};
             newClaim.id = claim.id;
-            newClaim.title = claim.title;
+            newClaim.titre = claim.titre;
             newClaim.description = claim.description;
+            newClaim.type = claim.type;
+            newClaim.planification = claim.planification;
+            newClaim.etat_avancement = claim.etat_avancement;
+            newClaim.epannelage = claim.epannelage;
             newClaim.created_at = claim.created_at;
             newClaim.user = claim.user;
             newClaim.feature = claim.feature;
+            // this.form.model.adjustments = response.data.adjustments;
             newClaim.photos = claim.photos;
             newClaim.updated_at = moment();
             axios.patch('/api/features/' + claim.feature.id, {
@@ -149,11 +154,16 @@ var showClaim = new Vue({
 
             var newClaim = {};
             newClaim.id = claim.id;
-            newClaim.title = claim.title;
+            newClaim.titre = claim.titre;
             newClaim.description = claim.description;
+            newClaim.type = claim.type;
+            newClaim.planification = claim.planification;
+            newClaim.etat_avancement = claim.etat_avancement;
+            newClaim.epannelage = claim.epannelage;
             newClaim.created_at = claim.created_at;
             newClaim.user = claim.user;
             newClaim.feature = claim.feature;
+            // this.form.model.adjustments = response.data.adjustments;
             newClaim.photos = claim.photos;
             newClaim.updated_at = moment();
             axios.patch('/api/features/' + claim.feature.id, {

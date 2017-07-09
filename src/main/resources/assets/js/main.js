@@ -15,8 +15,12 @@ window.carte = new Vue({
         geoserver: {},
         form: new Form({
             model: {
-                title: '',
-                description: '',
+                titre:'',
+                description:'',
+                type: '',
+                planification: '',
+                etat_avancement: '',
+                epannelage: '',
                 lon: 0,
                 lat: 0,
                 feature: ''
@@ -102,8 +106,12 @@ window.carte = new Vue({
             let newClaim = {};
             axios.get('/api/claims/' + claim).then(response => {
                 newClaim.id = response.data.id;
-                newClaim.title = response.data.title;
+                newClaim.titre = response.data.titre;
                 newClaim.description = response.data.description;
+                newClaim.type = response.data.type;
+                newClaim.planification = response.data.planification;
+                newClaim.etat_avancement = response.data.etat_avancement;
+                newClaim.epannelage = response.data.epannelage;
                 newClaim.created_at = response.data.created_at;
                 newClaim.user = response.data.user;
                 newClaim.feature = response.data.feature;
@@ -124,8 +132,12 @@ window.carte = new Vue({
             let newClaim = {};
             axios.get('/api/claims/' + claim).then(response => {
                 newClaim.id = response.data.id;
-                newClaim.title = response.data.title;
+                newClaim.titre = response.data.titre;
                 newClaim.description = response.data.description;
+                newClaim.type = response.data.type;
+                newClaim.planification = response.data.planification;
+                newClaim.etat_avancement = response.data.etat_avancement;
+                newClaim.epannelage = response.data.epannelage;
                 newClaim.created_at = response.data.created_at;
                 newClaim.user = response.data.user;
                 newClaim.feature = response.data.feature;

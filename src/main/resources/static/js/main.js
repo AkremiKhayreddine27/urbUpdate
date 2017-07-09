@@ -92,8 +92,12 @@ window.carte = new Vue({
         geoserver: {},
         form: new __WEBPACK_IMPORTED_MODULE_1__Form__["a" /* Form */]({
             model: {
-                title: '',
+                titre: '',
                 description: '',
+                type: '',
+                planification: '',
+                etat_avancement: '',
+                epannelage: '',
                 lon: 0,
                 lat: 0,
                 feature: ''
@@ -179,8 +183,12 @@ window.carte = new Vue({
             var newClaim = {};
             axios.get('/api/claims/' + claim).then(function (response) {
                 newClaim.id = response.data.id;
-                newClaim.title = response.data.title;
+                newClaim.titre = response.data.titre;
                 newClaim.description = response.data.description;
+                newClaim.type = response.data.type;
+                newClaim.planification = response.data.planification;
+                newClaim.etat_avancement = response.data.etat_avancement;
+                newClaim.epannelage = response.data.epannelage;
                 newClaim.created_at = response.data.created_at;
                 newClaim.user = response.data.user;
                 newClaim.feature = response.data.feature;
@@ -200,8 +208,12 @@ window.carte = new Vue({
             var newClaim = {};
             axios.get('/api/claims/' + claim).then(function (response) {
                 newClaim.id = response.data.id;
-                newClaim.title = response.data.title;
+                newClaim.titre = response.data.titre;
                 newClaim.description = response.data.description;
+                newClaim.type = response.data.type;
+                newClaim.planification = response.data.planification;
+                newClaim.etat_avancement = response.data.etat_avancement;
+                newClaim.epannelage = response.data.epannelage;
                 newClaim.created_at = response.data.created_at;
                 newClaim.user = response.data.user;
                 newClaim.feature = response.data.feature;
@@ -840,12 +852,12 @@ var Map = function () {
                                                     var coordinate = ol.proj.transform([claim.lon, claim.lat], 'EPSG:4326', 'EPSG:3857');
                                                     var popup = new ol.Overlay.Popup({ insertFirst: false });
                                                     _this.map.addOverlay(popup);
-                                                    popup.show(coordinate, '<div>' + '<p>' + claim.claim.user.name + '</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' + '<a style="margin-top: 10px" class="btn btn-success btn-sm" onclick="carte.validateFeature(' + claim.claim.id + ')"><i class="fa fa-check"></i> valider</a>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
+                                                    popup.show(coordinate, '<div>' + '<p>' + claim.claim.user.name + '</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.titre + '</a><br/>' + '<a style="margin-top: 10px" class="btn btn-success btn-sm" onclick="carte.validateFeature(' + claim.claim.id + ')"><i class="fa fa-check"></i> valider</a>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
                                                 } else if (claim.claim.user.id === carte.user.id) {
                                                     var _coordinate = ol.proj.transform([claim.lon, claim.lat], 'EPSG:4326', 'EPSG:3857');
                                                     var popup = new ol.Overlay.Popup({ insertFirst: false });
                                                     _this.map.addOverlay(popup);
-                                                    popup.show(_coordinate, '<div>' + '<p>Votre réclamation</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.title + '</a><br/>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
+                                                    popup.show(_coordinate, '<div>' + '<p>Votre réclamation</p>' + '<a href="/claims/' + claim.claim.id + '">' + claim.claim.titre + '</a><br/>' + '<a style="margin-top: 10px;margin-left: 10px" class="btn btn-danger btn-sm" onclick="carte.cancelFeature(' + claim.claim.id + ')"><i class="fa fa-close"></i> annuler</a>' + '</div>');
                                                 } else {
                                                     feature.setStyle(emptyImgStyle);
                                                 }
@@ -1283,7 +1295,12 @@ var Map = function () {
                                     info += '<div class="col-md-4">' + key + ':</div><div class="col-md-8">' + value + '</div>';
                                 });
                                 axios.get('/api/features/' + evt.selected[0].get(_this.layers_primary_key)).then(function (response) {
-                                    info += '<div class="col-md-12 alert alert-danger">' + '<ul style="list-style: none;margin: 0;padding: 0">' + '<li>' + response.data.claim.title + '</li><li><ul style="display: flex;flex-wrap: wrap">';
+                                    if (response.data.claim.planification) {
+                                        response.data.claim.planification = "Oui";
+                                    } else {
+                                        response.data.claim.planification = "Non";
+                                    }
+                                    info += '<div style="position:relative;" class="col-md-12 alert alert-danger">' + '<div style="position: absolute;top:5px;right: 5px;"><i style="margin-right: 5px;margin-left: 5px; " class="fa fa-clock-o"></i>' + moment(response.data.claim.updated_at).from(moment()) + '</div> ' + '<ul style="list-style: none;margin: 0;padding: 0">' + '<li><i style="margin-right: 5px; " class="fa fa-user"></i>' + response.data.claim.user.name + '</li>' + '<li><span style="font-weight: bold">' + response.data.claim.titre + '</span></li>' + '<li>Type: ' + response.data.claim.type + '</li>' + '<li>Planification: ' + response.data.claim.planification + '</li>' + '<li>Etat avancement de la construction: ' + response.data.claim.etat_avancement + '%</li>' + '<li>Epannelage: ' + response.data.claim.epannelage + '</li>' + '<li><ul style="display: flex;flex-wrap: wrap">';
 
                                     for (var photo in response.data.claim.photos) {
                                         info += '<li style="padding: 3px;"><img style="width:94px" src="' + response.data.claim.photos[photo].path + '" /></li>';

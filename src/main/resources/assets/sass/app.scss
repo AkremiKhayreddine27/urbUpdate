@@ -9,6 +9,7 @@
 @import "users";
 @import "notifications";
 @import "dashboard";
+@import "presentation";
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
@@ -35,3 +36,28 @@
 }
 
 
+.modal{
+  overflow:auto !important;
+}
+
+/*
+ *  STYLE 4
+ */
+
+::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: white;
+}
+
+::-webkit-scrollbar
+{
+  width: 10px;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb
+{
+  background-color: $secondary-color;
+  border: 2px solid darken($secondary-color,1%);
+}

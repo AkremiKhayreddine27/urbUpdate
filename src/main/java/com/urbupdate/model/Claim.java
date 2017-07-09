@@ -22,11 +22,23 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "TITLE", nullable = false)
-    private String title;
+    @Column(name = "type", nullable = false)
+    private String type;
 
-    @Column(name = "DESCRIPTION", nullable = false)
+    @Column(name = "titre", nullable = false)
+    private String titre;
+
+    @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "planification", nullable = false)
+    private boolean planification;
+
+    @Column(name = "etat_avancement", nullable = false)
+    private Integer etat_avancement;
+
+    @Column(name = "epannelage", nullable = false)
+    private String epannelage;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type = "date")
@@ -92,27 +104,8 @@ public class Claim {
         return id;
     }
 
-
-    public String getTitle() {
-        return title;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getUpdated_at() {
@@ -129,6 +122,55 @@ public class Claim {
 
     public void setCreated_at(Date created_at) {
         this.createdAt = created_at;
+    }
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public boolean isPlanification() {
+        return planification;
+    }
+
+    public void setPlanification(boolean planification) {
+        this.planification = planification;
+    }
+
+    public Integer getEtat_avancement() {
+        return etat_avancement;
+    }
+
+    public void setEtat_avancement(Integer etat_avancement) {
+        this.etat_avancement = etat_avancement;
+    }
+
+    public String getEpannelage() {
+        return epannelage;
+    }
+
+    public void setEpannelage(String epannelage) {
+        this.epannelage = epannelage;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

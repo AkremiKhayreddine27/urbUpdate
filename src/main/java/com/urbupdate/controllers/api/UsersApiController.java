@@ -1,5 +1,6 @@
 package com.urbupdate.controllers.api;
 
+import com.urbupdate.forms.Register;
 import com.urbupdate.model.Claim;
 import com.urbupdate.model.Role;
 import com.urbupdate.model.User;
@@ -54,11 +55,16 @@ public class UsersApiController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<?> store(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> store(@Valid @RequestBody Register user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(bindingResult.getAllErrors());
         } else {
-            User u = userRepository.save(user);
+            User newUser = new User();
+            newUser.setName(user.getName());
+            newUser.setEmail(user.getEmail());
+            newUser.setPassword(user.getPassword());
+            newUser.setRoles(user.getRoles());
+            User u = userRepository.save(newUser);
             return ResponseEntity.ok(u);
         }
     }

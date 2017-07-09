@@ -69,8 +69,8 @@
   }
   .infosPopup::-webkit-scrollbar-thumb {
     border-radius: 0;
-    background-color: rgba(254, 89, 105, 0.8);
-    -webkit-box-shadow: inset 0 0 6px rgba(254, 89, 105, 0.8);
+    background-color: $secondary-color;
+    -webkit-box-shadow: inset 0 0 6px $secondary-color;
   }
   .layersConfig {
     position: absolute;

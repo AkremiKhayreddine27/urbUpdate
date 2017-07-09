@@ -6,10 +6,10 @@
                     <div class="logo">
                         <img src="/images/logo.png" alt=""/>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat hic ipsa laudantium minima
-                            perferendis
-                            quia quisquam repellendus sapiente soluta vero! Animi aspernatur, at aut beatae consequuntur
-                            doloremque
+                            Une plate forme au service des collectivités locales et du citoyen disposant de données urbaine
+                            fiables,
+                            indispensable au suivie de l’étalement urbain et à la mise en œuvre des nouvelles politiques de
+                            planification et d’aménagement du territoire.
                         </p>
                     </div>
                 </aside>
@@ -18,8 +18,12 @@
                     <div class="textwidget">
                         <ul>
                             <li><a href="/">Accueil</a></li>
-                            <li><a href="/">Présentation</a></li>
-                            <li><a href="/">Carthographie</a></li>
+                            <li><a th:href="@{/presentation}">Présentation</a></li>
+                            <li><a th:href="@{/urban}">L'étalement urbain</a></li>
+                            <li><a th:href="@{/time}">Remonter le temps</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/map}">Cartographie</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/claims}">Réclamations </a></li>
+                            <li><a th:href="@{/contact}">Contacts</a></li>
                         </ul>
                     </div>
                 </aside>
@@ -38,7 +42,7 @@
     <div id="footer" role="contentinfo">
         <div class="footer_border">
             <div class="footer_inner">
-                <span class="footer_copyright copyright">2016 FST -- Votre nom</span></div>
+                <span class="footer_copyright copyright">2016 FST -- </span></div>
         </div>
     </div>
 </footer>

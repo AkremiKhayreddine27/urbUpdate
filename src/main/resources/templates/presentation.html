@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<main id="presentation" layout:fragment="page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="p_title">Urbupdate</h1>
+                <p>
+                    Une plate forme au service des collectivités locales et du citoyen disposant de données urbaine
+                    fiables,
+                    indispensable au suivie de l’étalement urbain et à la mise en œuvre des nouvelles politiques de
+                    planification et d’aménagement du territoire.
+                </p>
+                <p>
+                    C’est une application SIG web favorisant l’accès aux données pour le citoyen dans le but de
+                    coproduire une base de données remise à jour en permanence qui suit le rythme de l’étalement urbain
+                    dont l’objectif est de contrecarré un tel processus long, complexe et évolutif qui se produit dans
+                    le cadre de plusieurs systèmes en interaction : social, spatial, économique et politique.
+                </p>
+                <p>
+                    Elle permet de visualiser les données géographiques numériques (représentations des bâtiments,
+                    hydrographie, altitude, réseau viaire, limites administratives, noms de lieux, etc.) mais également
+                    de nombreuses données publiques (occupation du sol, taches urbaines de différentes dates…).
+                </p>
+                <p>
+                    Urbupdate est une infrastructure de services :
+                </p>
+                <div class="urb-liste">
+                    <div class="urb-liste-item">
+                        <i class="fa fa-database"></i>
+                        <span>Un entrepôt de données pour le stockage.</span>
+                    </div>
+                    <div class="urb-liste-item">
+                        <i class="fa fa-dashboard"></i>
+                        <span>
+                            Une plateforme pour la préparation et la publication des données.
+                        </span>
+                    </div>
+                    <div class="urb-liste-item">
+                        <i class="fa fa-map"></i>
+                        <span>Un géoservices pour la visualisation, le traitement et la mise à jour
+                            des données.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

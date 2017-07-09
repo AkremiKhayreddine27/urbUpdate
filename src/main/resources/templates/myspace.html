@@ -85,7 +85,7 @@
                                         </div>
                                         <div class="claim_content">
                                             <div class="claim_title"><a :href="'/claims/'+claim.id"
-                                                                        v-text="claim.title"></a></div>
+                                                                        v-text="claim.titre"></a></div>
                                             <div class="claim_infos">
                                                 <div class="infos">
                                                     <i class="fa fa-user"></i> {{ claim.user.name }} |
@@ -116,24 +116,24 @@
                                                     </li>
                                                     <li>
                                                         <div class="claim_params" v-if="isAdmin || isAgent">
-                                                            <button v-on:click="validateFeature(claim.feature.id)"
+                                                            <button v-on:click="validateFeature(claim)"
                                                                     v-if="
                                 claim.feature.status == 'annulée'" class
                                                                             ="btn btn-success btn-sm"><i
                                                                     class="fa fa-check"></i> Valider
                                                             </button>
-                                                            <button v-on:click="validateFeature(claim.feature.id)"
+                                                            <button v-on:click="validateFeature(claim)"
                                                                     v-if="
                                 claim.feature.status == 'En instance'"
                                                                     class="btn btn-success btn-sm"><i
                                                                     class="fa fa-check"></i> Valider
                                                             </button>
-                                                            <button v-on:click="cancelFeature(claim.feature.id)" v-if="
+                                                            <button v-on:click="cancelFeature(claim)" v-if="
                                 claim.feature.status == 'En instance'"
                                                                     class="btn btn-danger btn-sm"><i
                                                                     class="fa fa-trash"></i> Annuler
                                                             </button>
-                                                            <button v-on:click="cancelFeature(claim.feature.id)" v-if="
+                                                            <button v-on:click="cancelFeature(claim)" v-if="
                                     claim.feature.status == 'validée'"
                                                                     class="
                         btn btn-danger btn-sm"><i

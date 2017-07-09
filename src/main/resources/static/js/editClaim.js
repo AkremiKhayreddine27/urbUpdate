@@ -84,8 +84,12 @@ var editClaim = new Vue({
         form: new __WEBPACK_IMPORTED_MODULE_0__Form__["a" /* Form */]({
             model: {
                 id: 0,
-                title: '',
+                titre: '',
                 description: '',
+                type: '',
+                planification: '',
+                etat_avancement: '',
+                epannelage: '',
                 created_at: '',
                 updated_at: '',
                 user: {},
@@ -104,8 +108,12 @@ var editClaim = new Vue({
             axios.get('/api' + url).then(function (response) {
                 _this.claim = response.data;
                 _this.form.model.id = response.data.id;
-                _this.form.model.title = response.data.title;
+                _this.form.model.titre = response.data.titre;
                 _this.form.model.description = response.data.description;
+                _this.form.model.type = response.data.type;
+                _this.form.model.planification = response.data.planification;
+                _this.form.model.etat_avancement = response.data.etat_avancement;
+                _this.form.model.epannelage = response.data.epannelage;
                 _this.form.model.created_at = response.data.created_at;
                 _this.form.model.updated_at = response.data.updated_at;
                 _this.form.model.user = response.data.user;
@@ -120,7 +128,11 @@ var editClaim = new Vue({
             var vm = this;
             this.form.patch('/claims/' + this.claim.id).then(function (response) {
                 _this2.claim = response;
-                _this2.form.model.title = response.title;
+                _this2.form.model.titre = response.titre;
+                _this2.form.model.type = response.type;
+                _this2.form.model.planification = response.planification;
+                _this2.form.model.etat_avancement = response.etat_avancement;
+                _this2.form.model.epannelage = response.epannelage;
                 _this2.form.model.description = response.description;
                 if (_this2.zone.files.length > 0) {
                     _this2.zone.options.url = "/claims/" + vm.claim.id + "/upload";

@@ -3,11 +3,14 @@ package com.urbupdate.forms;
 
 
 
+import com.urbupdate.model.Role;
 import com.urbupdate.validation.PasswordMatches;
 import com.urbupdate.validation.ValidEmail;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @PasswordMatches
@@ -42,6 +45,8 @@ public class Register {
     @ValidEmail
     private String email;
 
+    private Set<Role> roles = new HashSet<Role>();
+
     public String getEmail() {
         return email;
     }
@@ -58,5 +63,13 @@ public class Register {
 
     public void setMatchingPassword(String matchingPassword) {
         this.matchingPassword = matchingPassword;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

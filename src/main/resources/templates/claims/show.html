@@ -7,7 +7,7 @@
         <div class="row">
             <div class="show-claim col-md-8">
                 <div class="show-claim_header">
-                    <div class="show-claim_header_title">{{ claim.title }}</div>
+                    <div class="show-claim_header_title">{{ claim.titre }}</div>
                     <div class="show-claim_header_edit">
                         <a v-bind:href="'/claims/'+claim.id+'/edit'"
                            v-if="isAdmin || isAgent || claim.user.id == user.id"
@@ -42,6 +42,17 @@
                         <i class="fa fa-clock-o"></i> {{ claim.updated_at }}
                     </div>
                 </div>
+                <div class="show-claim_tags">
+                    <ul>
+                        <li>Type: {{ claim.type }}</li>
+                        <li>Planification:
+                            <div v-if="claim.planification">Oui</div>
+                            <div v-if="!claim.planification">Non</div>
+                        </li>
+                        <li>Etat d'avancement de la construction: {{ claim.etat_avancement }}</li>
+                        <li>Epannelage: {{ claim.epannelage }}</li>
+                    </ul>
+                </div>
                 <div class="show-claim_description">
                     {{ claim.description }}
                 </div>
@@ -62,16 +73,33 @@
                         <li v-for="adjustment in claim.adjustments">
                             <div :class="[adjustment.new_version.status, circle]"></div>
                             <p v-if="adjustment.new_version.status">
-                                {{ adjustment.user.name }} a {{ adjustment.new_version.status }} cette
+                                {{ adjustment.user.name }} a {{ adjustment.new_version.status }} de cette
                                 réclamation <br/>
                                 <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
                             </p>
-                            <p v-if="adjustment.new_version.title">
-                                {{ adjustment.user.name }} a modifier le titre cette réclamation <br/>
+                            <p v-if="adjustment.new_version.titre">
+                                {{ adjustment.user.name }} a modifier le titre cette de réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                            <p v-if="adjustment.new_version.type">
+                                {{ adjustment.user.name }} a modifier le type cette de réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                            <p v-if="adjustment.new_version.planification != null">
+                                {{ adjustment.user.name }} a modifier la planification de cette réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                            <p v-if="adjustment.new_version.etat_avancement">
+                                {{ adjustment.user.name }} a modifier l'Etat d'avancement de la
+                                construction de cette réclamation <br/>
+                                <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
+                            </p>
+                            <p v-if="adjustment.new_version.epannelage">
+                                {{ adjustment.user.name }} a modifier l'epannelage de cette réclamation <br/>
                                 <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
                             </p>
                             <p v-if="adjustment.new_version.description">
-                                {{ adjustment.user.name }} a modifier la description cette
+                                {{ adjustment.user.name }} a modifier la description de cette
                                 réclamation <br/>
                                 <span class="claim_adjustment_time">{{ adjustment.updated_at }}</span>
                             </p>

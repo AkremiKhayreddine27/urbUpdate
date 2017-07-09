@@ -97,13 +97,29 @@ public class ClaimsController {
         adjustment.setUser(user);
         JSONObject jsonObjectBefore = new JSONObject();
         JSONObject jsonObjectAfter = new JSONObject();
-        if (!dirty.getTitle().equals(claim.getTitle())) {
-            jsonObjectBefore.put("title", dirty.getTitle());
-            jsonObjectAfter.put("title", claim.getTitle());
+        if (!dirty.getTitre().equals(claim.getTitre())) {
+            jsonObjectBefore.put("titre", dirty.getTitre());
+            jsonObjectAfter.put("titre", claim.getTitre());
         }
         if (!dirty.getDescription().equals(claim.getDescription())) {
             jsonObjectBefore.put("description", dirty.getDescription());
             jsonObjectAfter.put("description", claim.getDescription());
+        }
+        if (!dirty.getType().equals(claim.getType())) {
+            jsonObjectBefore.put("type", dirty.getType());
+            jsonObjectAfter.put("type", claim.getType());
+        }
+        if (dirty.isPlanification() != claim.isPlanification()) {
+            jsonObjectBefore.put("planification", dirty.isPlanification());
+            jsonObjectAfter.put("planification", claim.isPlanification());
+        }
+        if (dirty.getEtat_avancement() != claim.getEtat_avancement()) {
+            jsonObjectBefore.put("etat_avancement", dirty.getEtat_avancement());
+            jsonObjectAfter.put("etat_avancement", claim.getEtat_avancement());
+        }
+        if (!dirty.getEpannelage().equals(claim.getEpannelage())) {
+            jsonObjectBefore.put("epannelage", dirty.getEpannelage());
+            jsonObjectAfter.put("epannelage", claim.getEpannelage());
         }
         if (!dirty.getFeature().getStatus().equals(claim.getFeature().getStatus())) {
             jsonObjectBefore.put("status", dirty.getFeature().getStatus());
@@ -123,8 +139,12 @@ public class ClaimsController {
         String userName = getPrincipal();
         User user = userService.findByName(userName);
 
-        claim.setTitle(claimFeature.getTitle());
+        claim.setTitre(claimFeature.getTitre());
         claim.setDescription(claimFeature.getDescription());
+        claim.setType(claimFeature.getType());
+        claim.setPlanification(claimFeature.isPlanification());
+        claim.setEpannelage(claimFeature.getEpannelage());
+        claim.setEtat_avancement(claimFeature.getEtat_avancement());
         claim.setUser(user);
         claim = claimsRepository.save(claim);
 

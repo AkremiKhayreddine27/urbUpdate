@@ -74,8 +74,12 @@ const claims = new Vue({
         validateFeature(claim){
             let newClaim = {};
             newClaim.id = claim.id;
-            newClaim.title = claim.title;
+            newClaim.titre = claim.titre;
             newClaim.description = claim.description;
+            newClaim.type = claim.type;
+            newClaim.planification = claim.planification;
+            newClaim.etat_avancement = claim.etat_avancement;
+            newClaim.epannelage = claim.epannelage;
             newClaim.created_at = claim.created_at;
             newClaim.user = claim.user;
             newClaim.feature = claim.feature;
@@ -93,8 +97,12 @@ const claims = new Vue({
         cancelFeature(claim){
             let newClaim = {};
             newClaim.id = claim.id;
-            newClaim.title = claim.title;
+            newClaim.titre = claim.titre;
             newClaim.description = claim.description;
+            newClaim.type = claim.type;
+            newClaim.planification = claim.planification;
+            newClaim.etat_avancement = claim.etat_avancement;
+            newClaim.epannelage = claim.epannelage;
             newClaim.created_at = claim.created_at;
             newClaim.user = claim.user;
             newClaim.feature = claim.feature;

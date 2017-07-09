@@ -25,6 +25,11 @@ public class HomeController {
         return "doc";
     }
 
+    @RequestMapping(value = "/presentation", method = RequestMethod.GET)
+    public String presentation() {
+        return "presentation";
+    }
+
 
     @RequestMapping(value = {"/404"}, method = RequestMethod.GET)
     public String NotFoudPage(ModelMap model) {

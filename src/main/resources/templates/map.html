@@ -32,16 +32,16 @@
                         <input id="track" type="checkbox" v-model="positionCheckbox"/>
                         <label for="track"></label>
                     </div>
-                    <button id="btnSelect"  data-toggle="tooltip" title="Informations" class="btn btn-default">
+                    <button id="btnSelect" data-toggle="tooltip" title="Informations" class="btn btn-default">
                         <i class="fa fa-hand-pointer-o"></i>
                     </button>
                     <button id="btnEdit" data-toggle="tooltip" title="Modifier" class="btn btn-default">
                         <i class="fa fa-edit"></i>
                     </button>
-                    <button id="btnDelete" data-toggle="tooltip" title="Supprimer"  class="btn btn-default">
+                    <button id="btnDelete" data-toggle="tooltip" title="Supprimer" class="btn btn-default">
                         <i class="fa fa-trash"></i>
                     </button>
-                    <button id="btnArea" data-toggle="tooltip" title="Multipolygon"  class="btn btn-default">
+                    <button id="btnArea" data-toggle="tooltip" title="Multipolygon" class="btn btn-default">
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button id="btnPoint" data-toggle="tooltip" title="Point" class="btn btn-default">
@@ -60,6 +60,151 @@
             <div style="display:none" id="location"></div>
             <div style="display:none" id="scale"></div>
             <div id="mailContent" style="width:100%;display:none"></div>
+        </div>
+
+
+        <!-- Trigger the modal with a button -->
+        <button id="addClaim" type="button" class="btn btn-info btn-lg hidden" data-toggle="modal"
+                data-target="#claim">Open Modal
+        </button>
+
+        <!-- Modal -->
+        <div id="claim" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Ajouter une réclamation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" v-on:submit.prevent="saveClaim" v-on:keydown="
+                        form.errors.clear($event.target.name)" enctype="multipart/form-data">
+                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('titre')}">
+                                <label for="titre" class="control-label col-md-4">Titre</label>
+                                <div class="col-md-8">
+                                    <input id="titre" v-model="form.model.titre" type="text"
+                                           class="form-control"/>
+                                    <span class="help-block"><strong
+                                            v-text="form.errors.get('titre')"></strong> </span>
+                                </div>
+                            </div>
+                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('type')}">
+                                <label for="title" class="col-md-4 control-label">Type</label>
+                                <div class="col-md-8">
+                                    <select id="title" v-model="form.model.type" type="text" class="form-control">
+                                        <option>Immeuble</option>
+                                        <option>Villa</option>
+                                        <option>Etage de villa</option>
+                                        <option>Garage</option>
+                                        <option>Cloture</option>
+                                        <option>Autres...</option>
+                                    </select>
+                                    <span class="help-block"><strong v-text="form.errors.get('type')"></strong> </span>
+                                </div>
+                            </div>
+                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('planification')}">
+                                <label class="col-md-4 control-label">Planification</label>
+                                <div class="col-md-8">
+                                    <div class="btn-radio">
+                                        <input type="radio" value="true" id="f-option"
+                                               v-model="form.model.planification"/>
+                                        <label for="f-option">Oui</label>
+                                        <div class="check"></div>
+                                    </div>
+                                    <div class="btn-radio">
+                                        <input type="radio" value="false" id="g-option"
+                                               v-model="form.model.planification"/>
+                                        <label for="g-option">Non</label>
+                                        <div class="check"></div>
+                                    </div>
+                                    <span class="help-block"><strong v-text="form.errors.get('planification')"></strong> </span>
+                                </div>
+                            </div>
+                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('etat_avancement')}">
+                                <label for="etat_avancement" class="col-md-4 control-label">Etat d'avancement de la
+                                    construction</label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <input v-model="form.model.etat_avancement" id="etat_avancement"
+                                               class="form-control"
+                                               type="text"/>
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                    <span class="help-block"><strong
+                                            v-text="form.errors.get('etat_avancement')"></strong> </span>
+                                </div>
+                            </div>
+                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('epannelage')}">
+                                <label for="epannelage" class="col-md-4 control-label">Epannelage</label>
+                                <div class="col-md-8">
+                                    <select id="epannelage" v-model="form.model.epannelage" type="text"
+                                            class="form-control">
+                                        <option>Rez de chaussée</option>
+                                        <option>R+1</option>
+                                        <option>R+2</option>
+                                        <option>R+3</option>
+                                        <option>R+4</option>
+                                        <option>R+5</option>
+                                        <option>Autres...</option>
+                                    </select>
+                                    <span class="help-block"><strong v-text="form.errors.get('type')"></strong> </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <div class="col-md-4" v-bind:class="{'has-error': form.errors.get('lon')}">
+                                        <label for="lon" class="control-label">lon</label>
+                                        <div>
+                                            <input type="text" v-model="form.model.lon" id="lon" class="form-control"/>
+                                            <span class="help-block"><strong
+                                                    v-text="form.errors.get('lon')"></strong> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" v-bind:class="{'has-error': form.errors.get('lat')}">
+                                        <label for="lat" class="control-label">lat</label>
+                                        <div>
+                                            <input v-model="form.model.lat" id="lat" class="form-control" type="text"/>
+                                            <span class="help-block"><strong
+                                                    v-text="form.errors.get('lat')"></strong> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" v-bind:class="{'has-error': form.errors.get('feature')}">
+                                        <label for="feature" class="control-label">feature</label>
+                                        <div>
+                                            <input v-model="form.model.feature" id="feature" class="form-control"
+                                                   type="text"/>
+                                            <span class="help-block"><strong
+                                                    v-text="form.errors.get('feature')"></strong> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('description')}">
+                                <label for="epannelage" class="col-md-4 control-label">Description</label>
+                                <div class="col-md-8">
+                                   <textarea class="form-control" v-model="form.model.description">
+
+                                   </textarea>
+                                    <span class="help-block"><strong v-text="form.errors.get('description')"></strong> </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div id="dzone" class="dropzone">
+                                    <div class="dropzone-previews"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="closeClaim" type="button" class="btn btn-default" data-dismiss="modal">Annuler
+                        </button>
+                        <button class="btn btn-primary" id="saveClaim" v-on:click="saveClaim">Ajouter</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <!-- Trigger the modal with a button -->
         <button id="sendMailNewData" type="button" class="btn btn-info btn-lg hidden" data-toggle="modal"
@@ -91,84 +236,6 @@
             </div>
         </div>
 
-        <!-- Trigger the modal with a button -->
-        <button id="addClaim" type="button" class="btn btn-info btn-lg hidden" data-toggle="modal"
-                data-target="#claim">Open Modal
-        </button>
-
-        <!-- Modal -->
-        <div id="claim" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Ajouter une réclamation</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="post-form" v-on:submit.prevent="saveClaim" v-on:keydown="
-                        form.errors.clear($event.target.name)" enctype="multipart/form-data">
-                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('title')}">
-                                <label for="title" class="control-label">Titre</label>
-                                <div>
-                                    <input id="title" v-model="form.model.title" type="text" class="form-control"/>
-                                    <span class="help-block"><strong v-text="form.errors.get('title')"></strong> </span>
-                                </div>
-                            </div>
-                            <div class="form-group" v-bind:class="{'has-error': form.errors.get('description')}">
-                                <label for="description" class="control-label">Description</label>
-                                <div>
-                                    <textarea v-model="form.model.description" id="description"
-                                              class="form-control"></textarea>
-                                    <span class="help-block"><strong v-text="form.errors.get('title')"></strong> </span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-4" v-bind:class="{'has-error': form.errors.get('lon')}">
-                                        <label for="lon" class="control-label">lon</label>
-                                        <div>
-                                            <input type="text" v-model="form.model.lon" id="lon" class="form-control"/>
-                                            <span class="help-block"><strong
-                                                    v-text="form.errors.get('lon')"></strong> </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4" v-bind:class="{'has-error': form.errors.get('lat')}">
-                                        <label for="lat" class="control-label">lat</label>
-                                        <div>
-                                            <input v-model="form.model.lat" id="lat" class="form-control" type="text"/>
-                                            <span class="help-block"><strong
-                                                    v-text="form.errors.get('lat')"></strong> </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4" v-bind:class="{'has-error': form.errors.get('feature')}">
-                                        <label for="feature" class="control-label">feature</label>
-                                        <div>
-                                            <input v-model="form.model.feature" id="feature" class="form-control"
-                                                   type="text"/>
-                                            <span class="help-block"><strong
-                                                    v-text="form.errors.get('feature')"></strong> </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div id="dzone" class="dropzone">
-                                    <div class="dropzone-previews"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="closeClaim" type="button" class="btn btn-default" data-dismiss="modal">Annuler
-                        </button>
-                        <button class="btn btn-primary" id="saveClaim" v-on:click="saveClaim">Ajouter</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </div>
 </main>
 <th:block layout:fragment="script">

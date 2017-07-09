@@ -23,9 +23,8 @@
             <ul class="nav navbar-nav">
                 <li><a href="/">Accueil</a></li>
                 <li><a th:href="@{/presentation}">Présentation</a></li>
-                <li><a th:href="@{/urban}">L'étalement urbain</a></li>
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/map}">Cartographie</a></li>
                 <li><a th:href="@{/time}">Remonter le temps</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/map}">Cartographie</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/claims}">Réclamations </a></li>
                 <li><a th:href="@{/contact}">Contacts</a></li>
             </ul>

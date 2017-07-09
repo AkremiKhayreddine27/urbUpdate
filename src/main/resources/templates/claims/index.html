@@ -12,7 +12,7 @@
                             <img v-if="claim.photos[0]" :src="claim.photos[0].thumbnail_path_url"/>
                         </div>
                         <div class="claim_content">
-                            <div class="claim_title"><a :href="'/claims/'+claim.id" v-text="claim.title"></a></div>
+                            <div class="claim_title"><a :href="'/claims/'+claim.id" v-text="claim.titre"></a></div>
                             <div class="claim_infos">
                                 <div class="infos">
                                     <i class="fa fa-user"></i> {{ claim.user.name }} |

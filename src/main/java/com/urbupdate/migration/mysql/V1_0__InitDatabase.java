@@ -60,8 +60,12 @@ public class V1_0__InitDatabase implements SpringJdbcMigration {
     private String createClaimsTable() {
         return "create table claims (\n"
                 + "   id BIGINT NOT NULL AUTO_INCREMENT,\n"
-                + "   title VARCHAR(255) NOT NULL,\n"
-                + "   description text NOT NULL,\n"
+                + "   titre VARCHAR(255) NOT NULL,\n"
+                + "   description TEXT NOT NULL,\n"
+                + "   type VARCHAR(255) NOT NULL,\n"
+                + "   planification boolean NOT NULL, \n"
+                + "   etat_avancement INT NOT NULL,\n"
+                + "   epannelage VARCHAR(255) NOT NULL,\n"
                 + "   user_id BIGINT NOT NULL,\n"
                 + "   created_at timestamp,\n"
                 + "   updated_at timestamp,\n"
@@ -155,11 +159,11 @@ public class V1_0__InitDatabase implements SpringJdbcMigration {
     }
 
     private String insertUserProfile_Agent() {
-        return "INSERT INTO roles (name,slug) VALUES ('Agent','agent');";
+        return "INSERT INTO roles (name,slug) VALUES ('Technicien','technicien');";
     }
 
     private String insertUserProfile_ADMIN() {
-        return "INSERT INTO roles (name,slug) VALUES ('Éditeur','éditeur');";
+        return "INSERT INTO roles (name,slug) VALUES ('Citoyen','citoyen');";
     }
 
     private String createAppUserUserProfileTable() {
@@ -200,7 +204,7 @@ public class V1_0__InitDatabase implements SpringJdbcMigration {
     }
 
     private String insertGeoserverConfig() {
-        return "INSERT INTO geoservers (url,workspace,feature_ns,src_name,layers_primary_key) VALUES ('http://localhost:8080/geoserver','sabrine','urbupdate','EPSG:32632','ID');";
+        return "INSERT INTO geoservers (url,workspace,feature_ns,src_name,layers_primary_key) VALUES ('http://localhost:8080/geoserver','urbupdate','http://urbupdate','EPSG:32632','ID');";
     }
 
 }

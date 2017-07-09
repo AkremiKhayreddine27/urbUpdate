@@ -206,6 +206,24 @@
       display: flex;
     }
   }
+  &_tags {
+    padding: 0 30px 0 30px;
+    color: $secondary-color;
+    ul {
+      display: flex;
+      li {
+        background-color: $primary-color;
+        color: white;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        padding: 5px;
+        border-radius: 5px;
+      }
+    }
+  }
   &_params {
     margin-left: 5px;
   }
