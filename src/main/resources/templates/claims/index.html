@@ -5,6 +5,66 @@
 <main layout:fragment="page">
     <div id="claims">
         <div class="container claims">
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <label for="title" class="col-md-4 control-label">Type</label>
+                    <div class="col-md-8">
+                        <select id="title" type="text" class="form-control">
+                            <option>Immeuble</option>
+                            <option>Villa</option>
+                            <option>Etage de villa</option>
+                            <option>Garage</option>
+                            <option>Cloture</option>
+                            <option>Autres...</option>
+                        </select>
+                        <span class="help-block"><strong></strong> </span>
+                    </div>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="col-md-4 control-label">Planification</label>
+                    <div class="col-md-8">
+                        <input type="radio" value="true" id="f-option"
+                        />
+                        <label for="f-option">Oui</label>
+                        <div class="check"></div>
+                        <input type="radio" value="false" id="g-option"
+                        />
+                        <label for="g-option">Non</label>
+                        <div class="check"></div>
+                        <span class="help-block"><strong></strong> </span>
+                    </div>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="etat_avancement" class="col-md-7 control-label">Etat d'avancement de la
+                        construction</label>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input id="etat_avancement"
+                                   class="form-control"
+                                   type="text"/>
+                            <span class="input-group-addon">%</span>
+                        </div>
+                        <span class="help-block"><strong
+                        ></strong> </span>
+                    </div>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="epannelage" class="col-md-4 control-label">Epannelage</label>
+                    <div class="col-md-8">
+                        <select id="epannelage" type="text"
+                                class="form-control">
+                            <option>Rez de chaussée</option>
+                            <option>R+1</option>
+                            <option>R+2</option>
+                            <option>R+3</option>
+                            <option>R+4</option>
+                            <option>R+5</option>
+                            <option>Autres...</option>
+                        </select>
+                        <span class="help-block"><strong></strong> </span>
+                    </div>
+                </div>
+            </div>
             <div v-if="claims.length > 0" class="row" v-for="row in chunkedClaims">
                 <div class="col-md-3" v-for="claim in row">
                     <div class="claim">
@@ -40,6 +100,9 @@
                                     <li><a :href="'/claims/'+claim.id+'/edit'"
                                            v-if="isAdmin || isAgent || claim.user.id ==user.id"
                                            class="btn btn-sm"><i class="fa fa-edit"></i> Modifier</a></li>
+                                    <li><a :href="'/claims/'+claim.id+'/destroy'"
+                                           v-if="isAdmin || isAgent || claim.user.id ==user.id"
+                                           class="btn btn-sm"><i class="fa fa-trash"></i> Supprimer</a></li>
                                     <li>
                                         <div class="claim_params" v-if="isAdmin || isAgent">
                                             <button v-on:click="validateFeature(claim)"

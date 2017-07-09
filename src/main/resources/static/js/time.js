@@ -1,10 +1,10 @@
 var format = 'image/png';
-var bounds = [346.43086859108007, -15171.47000474253,
-    11440.885596590253, 519.8528592562999];
+var bounds = [581453.2590972354, 4045111.157882684,
+    618091.6301793255, 4070256.0578826843];
 
 var projection = new ol.proj.Projection({
-    code: 'EPSG:404000',
-    units: 'degrees',
+    code: 'EPSG:32632',
+    units: 'm',
     axisOrientation: 'neu',
     global: false
 });
@@ -50,17 +50,30 @@ var map2 = new ol.Map({
     layers: [anc],
     view: view2
 });
-map1.getView().fit(bounds, map1.getSize());
-map2.getView().fit(bounds, map2.getSize());
-view1.on('change:center', function (evt) {
-    view2.setCenter(view1.getCenter());
-});
-view2.on('change:center', function (evt) {
-    view1.setCenter(view2.getCenter());
-});
-map1.getView().on('change:resolution', function(evt) {
-    map2.getView().setZoom(map1.getView().getZoom());
-});
-map2.getView().on('change:resolution', function(evt) {
+function setMapZoom(){
+    return new Promise(function (resolve, reject) {
+        map1.getView().setZoom(50);
+        map2.getView().setZoom(50);
+        resolve();
+    });
+}
+setMapZoom().then(()=>{
+    map1.getView().fit(bounds, map1.getSize());
+    map2.getView().fit(bounds, map2.getSize());
+
+    view1.on('change:center', function (evt) {
+        view2.setCenter(view1.getCenter());
+    });
+    view2.on('change:center', function (evt) {
+        view1.setCenter(view2.getCenter());
+    });
+    map1.getView().on('change:resolution', function(evt) {
+        map2.getView().setZoom(map1.getView().getZoom());
+    });
+    map2.getView().on('change:resolution', function(evt) {
+    })
+
+
+
     map1.getView().setZoom(map2.getView().getZoom());
 });
