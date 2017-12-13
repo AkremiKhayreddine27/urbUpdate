@@ -22,12 +22,6 @@ $(document).ready(function () {
     }).parent().addClass('active');
     $('ul.user-settings a[href="' + url + '"]').parent().addClass('active');
 });
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 window.Event = new Vue();
 Vue.component('layer-color', {
     props: ['color', 'layer', 'showinput'],

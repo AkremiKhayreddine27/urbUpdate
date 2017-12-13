@@ -15,7 +15,6 @@ public class UrbupdateApplication {
     public static void main(String[] args) {
         SpringApplication.run(UrbupdateApplication.class, args);
     }
-
     @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {

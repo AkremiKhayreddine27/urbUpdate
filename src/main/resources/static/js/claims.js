@@ -83,7 +83,12 @@ var claims = new Vue({
         user: {},
         loading: true,
         color: '#EF662F',
-        width: '10px'
+        width: '10px',
+        type: 'Tous',
+        planification: true,
+        epannelage: 'R+1',
+        etat_avancement: ''
+
     },
     computed: {
         isAdmin: function isAdmin() {
@@ -133,13 +138,73 @@ var claims = new Vue({
         getClaims: function getClaims() {
             var _this2 = this;
 
-            axios.get('/api/claims').then(function (response) {
-                _this2.claims = response.data;
-                for (var claim in _this2.claims) {
-                    _this2.claims[claim].updated_at = moment(_this2.claims[claim].updated_at).from(moment());
-                }
-                _this2.loading = false;
-            });
+            this.claims = [];
+            if (this.type === 'Tous') {
+                axios.get('/rest/claims', {
+                    params: {
+                        planification: this.planification,
+                        epannelage: this.epannelage,
+                        etatAvancement: this.etat_avancement
+                    }
+                }).then(function (response) {
+                    var claims = response.data._embedded.claims;
+
+                    var _loop = function _loop(claim) {
+                        claims[claim].photos = [];
+                        claims[claim].user = {};
+                        claims[claim].feature = {};
+                        claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
+                        axios.get(claims[claim]._links.photos.href).then(function (response) {
+                            claims[claim].photos = response.data._embedded.photos;
+                        });
+                        axios.get(claims[claim]._links.user.href).then(function (response) {
+                            claims[claim].user = response.data;
+                        });
+                        axios.get(claims[claim]._links.feature.href).then(function (response) {
+                            claims[claim].feature = response.data;
+                        });
+                    };
+
+                    for (var claim in claims) {
+                        _loop(claim);
+                    }
+                    _this2.claims = claims;
+                    _this2.loading = false;
+                });
+            } else {
+                axios.get('/rest/claims', {
+                    params: {
+                        type: this.type,
+                        planification: this.planification,
+                        epannelage: this.epannelage,
+                        etatAvancement: this.etat_avancement
+                    }
+                }).then(function (response) {
+                    var claims = response.data._embedded.claims;
+
+                    var _loop2 = function _loop2(claim) {
+                        claims[claim].photos = [];
+                        claims[claim].user = {};
+                        claims[claim].feature = {};
+                        claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
+                        axios.get(claims[claim]._links.photos.href).then(function (response) {
+                            claims[claim].photos = response.data._embedded.photos;
+                        });
+                        axios.get(claims[claim]._links.user.href).then(function (response) {
+                            claims[claim].user = response.data;
+                        });
+                        axios.get(claims[claim]._links.feature.href).then(function (response) {
+                            claims[claim].feature = response.data;
+                        });
+                    };
+
+                    for (var claim in claims) {
+                        _loop2(claim);
+                    }
+                    _this2.claims = claims;
+                    _this2.loading = false;
+                });
+            }
         },
         getUserClaims: function getUserClaims(id) {
             var _this3 = this;
@@ -147,7 +212,7 @@ var claims = new Vue({
             axios.get('/api/users/' + id + '/claims').then(function (response) {
                 _this3.claims = response.data;
                 for (var claim in _this3.claims) {
-                    _this3.claims[claim].updated_at = moment(_this3.claims[claim].updated_at).from(moment());
+                    claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
                 }
                 _this3.loading = false;
             });

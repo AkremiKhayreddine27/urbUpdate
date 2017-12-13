@@ -35,7 +35,7 @@ public class Claim {
     private boolean planification;
 
     @Column(name = "etat_avancement", nullable = false)
-    private Integer etat_avancement;
+    private Integer etatAvancement;
 
     @Column(name = "epannelage", nullable = false)
     private String epannelage;
@@ -141,12 +141,12 @@ public class Claim {
         this.planification = planification;
     }
 
-    public Integer getEtat_avancement() {
-        return etat_avancement;
+    public Integer getEtatAvancement() {
+        return etatAvancement;
     }
 
-    public void setEtat_avancement(Integer etat_avancement) {
-        this.etat_avancement = etat_avancement;
+    public void setEtatAvancement(Integer etat_avancement) {
+        this.etatAvancement = etat_avancement;
     }
 
     public String getEpannelage() {

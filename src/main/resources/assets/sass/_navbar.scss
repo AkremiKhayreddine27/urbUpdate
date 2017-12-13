@@ -84,3 +84,32 @@
     }
   }
 }
+
+
+// Responsive
+
+@media (max-width: 768px) {
+  .navbar {
+    .navbar-nav {
+      li.active {
+        a{
+          background-color: $primary-color;
+          color: white;
+          border-top: none;
+        }
+      }
+      li.dropdown {
+        .dropdown-menu {
+          li {
+            a {
+              color: white !important;
+              border-bottom:none;
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+}

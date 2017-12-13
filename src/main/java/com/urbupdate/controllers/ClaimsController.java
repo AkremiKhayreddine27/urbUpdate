@@ -113,9 +113,9 @@ public class ClaimsController {
             jsonObjectBefore.put("planification", dirty.isPlanification());
             jsonObjectAfter.put("planification", claim.isPlanification());
         }
-        if (dirty.getEtat_avancement() != claim.getEtat_avancement()) {
-            jsonObjectBefore.put("etat_avancement", dirty.getEtat_avancement());
-            jsonObjectAfter.put("etat_avancement", claim.getEtat_avancement());
+        if (dirty.getEtatAvancement() != claim.getEtatAvancement()) {
+            jsonObjectBefore.put("etat_avancement", dirty.getEtatAvancement());
+            jsonObjectAfter.put("etat_avancement", claim.getEtatAvancement());
         }
         if (!dirty.getEpannelage().equals(claim.getEpannelage())) {
             jsonObjectBefore.put("epannelage", dirty.getEpannelage());
@@ -144,7 +144,7 @@ public class ClaimsController {
         claim.setType(claimFeature.getType());
         claim.setPlanification(claimFeature.isPlanification());
         claim.setEpannelage(claimFeature.getEpannelage());
-        claim.setEtat_avancement(claimFeature.getEtat_avancement());
+        claim.setEtatAvancement(claimFeature.getEtatAvancement());
         claim.setUser(user);
         claim = claimsRepository.save(claim);
 

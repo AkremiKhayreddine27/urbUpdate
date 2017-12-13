@@ -25,9 +25,6 @@ public class ClaimsApiController {
     private FeaturesRepository featuresRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private AdjustmentsRepository adjustmentsRepository;
 
     @Autowired
@@ -35,8 +32,14 @@ public class ClaimsApiController {
 
 
     @RequestMapping("/claims")
-    public List<Claim> listClaims() {
-        return claimsRepository.findAllByOrderByUpdatedAtDesc();
+    public List<Claim> listClaims(
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "etat_avancement", required = false) Integer etat_avancement) {
+        if (!type.equals("Tous")) {
+            return claimsRepository.findByType(type);
+        } else {
+            return claimsRepository.findAllByOrderByUpdatedAtDesc();
+        }
     }
 
     @RequestMapping(value = "/claims/{claim}", method = RequestMethod.GET)
@@ -103,9 +106,9 @@ public class ClaimsApiController {
             jsonObjectBefore.put("planification", dirty.isPlanification());
             jsonObjectAfter.put("planification", claim.isPlanification());
         }
-        if (dirty.getEtat_avancement() != claim.getEtat_avancement()) {
-            jsonObjectBefore.put("etat_avancement", dirty.getEtat_avancement());
-            jsonObjectAfter.put("etat_avancement", claim.getEtat_avancement());
+        if (dirty.getEtatAvancement() != claim.getEtatAvancement()) {
+            jsonObjectBefore.put("etat_avancement", dirty.getEtatAvancement());
+            jsonObjectAfter.put("etat_avancement", claim.getEtatAvancement());
         }
         if (!dirty.getEpannelage().equals(claim.getEpannelage())) {
             jsonObjectBefore.put("epannelage", dirty.getEpannelage());

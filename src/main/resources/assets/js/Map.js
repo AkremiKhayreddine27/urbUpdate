@@ -523,8 +523,8 @@ export class Map {
             storage.set(key, 'checked');
             jQuery("#legende").append("" +
                 "<div style='flex-basis: 50%;display: flex;'>" +
-                "<div style='background-color: " + _this.layers[key]['color'] + "' class='slideThree'>" +
-                "<input id='" + _this.layers[key]['name'] + "' type='checkbox' />" +
+                "<div style='background-color: " + _this.layers[key]['stroke'] + "' class='slideThree'>" +
+                "<input onclick='carte.map.layersManagement(\x22" + _this.layers[key]['name'] + "\x22)' id='" + _this.layers[key]['name'] + "' type='checkbox' checked='true'/>" +
                 "<label for='" + _this.layers[key]['name'] + "'></label>" +
                 "</div>" +
                 "<p style='margin-left: 5px'>" + _this.layers[key]['name'] + "</p>" +
@@ -540,12 +540,18 @@ export class Map {
     }
 
 
-    removeLayerFromMap(layerName) {
-        this.map.removeLayer(this.layers[layerName]);
-    }
+    layersManagement(layer) {
+        let vm = this;
 
-    addLayerToMap(layerName) {
-        this.map.addLayer(this.layersWFS_array[layerName]);
+        console.log(layer);
+        if ($('#' + layer).is(':checked')) {
+            console.log('trigger add layer to map');
+            vm.addLayerToMap(layer);
+        }
+        else {
+            console.log('trigger remove layer from map');
+            vm.deleteLayerFromMap(layer);
+        }
     }
 
     detectActionButton() {
@@ -1209,5 +1215,18 @@ export class Map {
         }
         this.perimetre = (Math.round(this.perimetre * 100) / 100);
         return this.perimetre;
+    }
+
+    deleteLayerFromMap(layerName) {
+        let style = new ol.style.Style({
+            fill: new ol.style.Fill({color: "rgba(1,2,2,0)"}),
+            stroke: new ol.style.Stroke({color: "rgba(1,2,2,0)"})
+        });
+        console.log(layerName);
+        this.layersWFS_array[layerName].setStyle(style);
+    }
+
+    addLayerToMap(layerName) {
+        this.layersWFS_array[layerName].setStyle(this.styles_array[layerName]);
     }
 }

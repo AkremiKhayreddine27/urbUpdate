@@ -9,6 +9,7 @@ import com.urbupdate.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,10 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/users")
 public class UsersApiController {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -62,7 +67,7 @@ public class UsersApiController {
             User newUser = new User();
             newUser.setName(user.getName());
             newUser.setEmail(user.getEmail());
-            newUser.setPassword(user.getPassword());
+            newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             newUser.setRoles(user.getRoles());
             User u = userRepository.save(newUser);
             return ResponseEntity.ok(u);

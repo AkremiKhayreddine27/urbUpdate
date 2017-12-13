@@ -6,7 +6,7 @@ public class ClaimFeature {
     private String description;
     private String type;
     private boolean planification;
-    private Integer etat_avancement;
+    private Integer etatAvancement;
     private String epannelage;
 
     private Integer feature;
@@ -46,12 +46,12 @@ public class ClaimFeature {
         this.planification = planification;
     }
 
-    public Integer getEtat_avancement() {
-        return etat_avancement;
+    public Integer getEtatAvancement() {
+        return etatAvancement;
     }
 
-    public void setEtat_avancement(Integer etat_avancement) {
-        this.etat_avancement = etat_avancement;
+    public void setEtatAvancement(Integer etatAvancement) {
+        this.etatAvancement = etatAvancement;
     }
 
     public String getEpannelage() {

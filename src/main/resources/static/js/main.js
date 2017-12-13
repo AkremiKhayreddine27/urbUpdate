@@ -965,7 +965,7 @@ var Map = function () {
                 });
                 var storage = jQuery.localStorage;
                 storage.set(key, 'checked');
-                jQuery("#legende").append("" + "<div style='flex-basis: 50%;display: flex;'>" + "<div style='background-color: " + _this.layers[key]['color'] + "' class='slideThree'>" + "<input id='" + _this.layers[key]['name'] + "' type='checkbox' />" + "<label for='" + _this.layers[key]['name'] + "'></label>" + "</div>" + "<p style='margin-left: 5px'>" + _this.layers[key]['name'] + "</p>" + "</div>");
+                jQuery("#legende").append("" + "<div style='flex-basis: 50%;display: flex;'>" + "<div style='background-color: " + _this.layers[key]['stroke'] + "' class='slideThree'>" + "<input onclick='carte.map.layersManagement(\x22" + _this.layers[key]['name'] + "\x22)' id='" + _this.layers[key]['name'] + "' type='checkbox' checked='true'/>" + "<label for='" + _this.layers[key]['name'] + "'></label>" + "</div>" + "<p style='margin-left: 5px'>" + _this.layers[key]['name'] + "</p>" + "</div>");
             });
             if (_this.google || _this.bing) {
                 _this.map.getView().fit(ol.proj.transformExtent(_this.bounds, _this.srsName, 'EPSG:3857'), _this.map.getSize());
@@ -976,14 +976,18 @@ var Map = function () {
             return _this.layersWFS_array;
         }
     }, {
-        key: 'removeLayerFromMap',
-        value: function removeLayerFromMap(layerName) {
-            this.map.removeLayer(this.layers[layerName]);
-        }
-    }, {
-        key: 'addLayerToMap',
-        value: function addLayerToMap(layerName) {
-            this.map.addLayer(this.layersWFS_array[layerName]);
+        key: 'layersManagement',
+        value: function layersManagement(layer) {
+            var vm = this;
+
+            console.log(layer);
+            if ($('#' + layer).is(':checked')) {
+                console.log('trigger add layer to map');
+                vm.addLayerToMap(layer);
+            } else {
+                console.log('trigger remove layer from map');
+                vm.deleteLayerFromMap(layer);
+            }
         }
     }, {
         key: 'detectActionButton',
@@ -1642,6 +1646,21 @@ var Map = function () {
             }
             this.perimetre = Math.round(this.perimetre * 100) / 100;
             return this.perimetre;
+        }
+    }, {
+        key: 'deleteLayerFromMap',
+        value: function deleteLayerFromMap(layerName) {
+            var style = new ol.style.Style({
+                fill: new ol.style.Fill({ color: "rgba(1,2,2,0)" }),
+                stroke: new ol.style.Stroke({ color: "rgba(1,2,2,0)" })
+            });
+            console.log(layerName);
+            this.layersWFS_array[layerName].setStyle(style);
+        }
+    }, {
+        key: 'addLayerToMap',
+        value: function addLayerToMap(layerName) {
+            this.layersWFS_array[layerName].setStyle(this.styles_array[layerName]);
         }
     }]);
 

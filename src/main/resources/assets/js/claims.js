@@ -7,6 +7,11 @@ const claims = new Vue({
         loading: true,
         color: '#EF662F',
         width: '10px',
+        type: 'Tous',
+        planification: true,
+        epannelage:'R+1',
+        etat_avancement:''
+
     },
     computed: {
         isAdmin(){
@@ -54,19 +59,69 @@ const claims = new Vue({
             });
         },
         getClaims(){
-            axios.get('/api/claims').then(response => {
-                this.claims = response.data;
-                for (let claim in this.claims) {
-                    this.claims[claim].updated_at = moment(this.claims[claim].updated_at).from(moment());
-                }
-                this.loading = false;
-            })
+            this.claims = [];
+            if (this.type === 'Tous') {
+                axios.get('/rest/claims', {
+                    params: {
+                        planification: this.planification,
+                        epannelage:this.epannelage,
+                        etatAvancement:this.etat_avancement
+                    }
+                }).then(response => {
+                    let claims = response.data._embedded.claims;
+                    for (let claim in claims) {
+                        claims[claim].photos = [];
+                        claims[claim].user = {};
+                        claims[claim].feature = {};
+                        claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
+                        axios.get(claims[claim]._links.photos.href).then(response => {
+                            claims[claim].photos = response.data._embedded.photos;
+                        });
+                        axios.get(claims[claim]._links.user.href).then(response => {
+                            claims[claim].user = response.data;
+                        });
+                        axios.get(claims[claim]._links.feature.href).then(response => {
+                            claims[claim].feature = response.data;
+                        });
+                    }
+                    this.claims = claims;
+                    this.loading = false;
+                });
+            } else {
+                axios.get('/rest/claims', {
+                    params: {
+                        type: this.type,
+                        planification: this.planification,
+                        epannelage:this.epannelage,
+                        etatAvancement:this.etat_avancement
+                    }
+                }).then(response => {
+                    let claims = response.data._embedded.claims;
+                    for (let claim in claims) {
+                        claims[claim].photos = [];
+                        claims[claim].user = {};
+                        claims[claim].feature = {};
+                        claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
+                        axios.get(claims[claim]._links.photos.href).then(response => {
+                            claims[claim].photos = response.data._embedded.photos;
+                        });
+                        axios.get(claims[claim]._links.user.href).then(response => {
+                            claims[claim].user = response.data;
+                        });
+                        axios.get(claims[claim]._links.feature.href).then(response => {
+                            claims[claim].feature = response.data;
+                        });
+                    }
+                    this.claims = claims;
+                    this.loading = false;
+                });
+            }
         },
         getUserClaims(id){
             axios.get('/api/users/' + id + '/claims').then(response => {
                 this.claims = response.data;
                 for (let claim in this.claims) {
-                    this.claims[claim].updated_at = moment(this.claims[claim].updated_at).from(moment());
+                    claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
                 }
                 this.loading = false;
             })
@@ -119,7 +174,7 @@ const claims = new Vue({
         }
     },
     mounted(){
-        let _this =this;
+        let _this = this;
         this.getAuth().then(() => {
             var url = window.location.pathname;
             if (url != '/claims') {

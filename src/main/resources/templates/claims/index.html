@@ -9,7 +9,8 @@
                 <div class="col-md-3 form-group">
                     <label for="title" class="col-md-4 control-label">Type</label>
                     <div class="col-md-8">
-                        <select id="title" type="text" class="form-control">
+                        <select id="title" v-on:change="getClaims" v-model="type" type="text" class="form-control">
+                            <option>Tous</option>
                             <option>Immeuble</option>
                             <option>Villa</option>
                             <option>Etage de villa</option>
@@ -23,11 +24,11 @@
                 <div class="col-md-3 form-group">
                     <label class="col-md-4 control-label">Planification</label>
                     <div class="col-md-8">
-                        <input type="radio" value="true" id="f-option"
+                        <input v-on:click="getClaims" v-model="planification" type="radio" value="true" id="f-option"
                         />
                         <label for="f-option">Oui</label>
                         <div class="check"></div>
-                        <input type="radio" value="false" id="g-option"
+                        <input v-on:click="getClaims" v-model="planification" type="radio" value="false" id="g-option"
                         />
                         <label for="g-option">Non</label>
                         <div class="check"></div>
@@ -41,6 +42,8 @@
                         <div class="input-group">
                             <input id="etat_avancement"
                                    class="form-control"
+                                   v-model="etat_avancement"
+                                   v-on:keyup="getClaims"
                                    type="text"/>
                             <span class="input-group-addon">%</span>
                         </div>
@@ -51,7 +54,7 @@
                 <div class="col-md-3 form-group">
                     <label for="epannelage" class="col-md-4 control-label">Epannelage</label>
                     <div class="col-md-8">
-                        <select id="epannelage" type="text"
+                        <select v-on:change="getClaims" v-model="epannelage" id="epannelage" type="text"
                                 class="form-control">
                             <option>Rez de chaussée</option>
                             <option>R+1</option>
