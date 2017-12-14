@@ -181,7 +181,26 @@ const claims = new Vue({
                 let userId = _this.user.id;
                 this.getUserClaims(userId);
             } else {
-                this.getClaims();
+                axios.get('/rest/claims').then(response => {
+                    let claims = response.data._embedded.claims;
+                    for (let claim in claims) {
+                        claims[claim].photos = [];
+                        claims[claim].user = {};
+                        claims[claim].feature = {};
+                        claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
+                        axios.get(claims[claim]._links.photos.href).then(response => {
+                            claims[claim].photos = response.data._embedded.photos;
+                        });
+                        axios.get(claims[claim]._links.user.href).then(response => {
+                            claims[claim].user = response.data;
+                        });
+                        axios.get(claims[claim]._links.feature.href).then(response => {
+                            claims[claim].feature = response.data;
+                        });
+                    }
+                    this.claims = claims;
+                    this.loading = false;
+                });
             }
         });
     },

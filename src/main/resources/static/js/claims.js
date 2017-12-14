@@ -278,7 +278,31 @@ var claims = new Vue({
                 var userId = _this.user.id;
                 _this6.getUserClaims(userId);
             } else {
-                _this6.getClaims();
+                axios.get('/rest/claims').then(function (response) {
+                    var claims = response.data._embedded.claims;
+
+                    var _loop3 = function _loop3(claim) {
+                        claims[claim].photos = [];
+                        claims[claim].user = {};
+                        claims[claim].feature = {};
+                        claims[claim].updated_at = moment(claims[claim].updated_at).from(moment());
+                        axios.get(claims[claim]._links.photos.href).then(function (response) {
+                            claims[claim].photos = response.data._embedded.photos;
+                        });
+                        axios.get(claims[claim]._links.user.href).then(function (response) {
+                            claims[claim].user = response.data;
+                        });
+                        axios.get(claims[claim]._links.feature.href).then(function (response) {
+                            claims[claim].feature = response.data;
+                        });
+                    };
+
+                    for (var claim in claims) {
+                        _loop3(claim);
+                    }
+                    _this6.claims = claims;
+                    _this6.loading = false;
+                });
             }
         });
     },
